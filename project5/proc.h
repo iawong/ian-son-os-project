@@ -29,7 +29,7 @@
  */
 struct PCB {
 	char name[7];  		// 6 chars for filename + 1 for null terminator.
-	int state;		// One of the constants above.
+	int state;		    // One of the constants above.
 	int segment;		// memory segment occupied by the process.
 	int stackPointer;	// address of the stack pointer for the process.
 	
@@ -48,16 +48,16 @@ struct PCB {
  */
 #ifdef MAIN
   struct PCB *running;		// Pointer to the PCB of the running process
-  struct PCB idleProc;		// Pointer to a PCB for the idle process
+  struct PCB *idleProc;		// Pointer to a PCB for the idle process
   struct PCB *readyHead; 	// Pointer to the PCB at the head of the ready queue
   struct PCB *readyTail;	// Pointer to the PCB at the tail of the ready queue
   struct PCB pcbPool[8];	// Pool of PCBs to be used
 
   int memoryMap[8];		// Memory map with one entry for each segment
-				// Entry 0 corresponds to segment 0x2000
-				// Entry 1 corresponds to segment 0x3000
-				// etc...
-				// Entry 7 corresponds to segment 0x9000
+						// Entry 0 corresponds to segment 0x2000
+						// Entry 1 corresponds to segment 0x3000
+						// etc...
+						// Entry 7 corresponds to segment 0x9000
 
 #else
   extern struct PCB *running;
