@@ -26,12 +26,12 @@ void initializeProcStructures() {
         pcbPool[j].stackPointer = 0x0000;
     }
 
-    idleProc.name = "IDLE\0";
+    // idleProc.name = 
     idleProc.state = READY;
     idleProc.segment = 0x0000;
     idleProc.stackPointer = 0x0000;
 
-    running = idleProc;
+    running = &idleProc;
 
 }
 
@@ -41,7 +41,15 @@ void initializeProcStructures() {
  * should be marked as used.
  */
 int getFreeMemorySegment() {
+    int i = 0;
 
+    for(i = 0; i < 8; i++) {
+        if(memoryMap[i] == FREE) {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 /*
