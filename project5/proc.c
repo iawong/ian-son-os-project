@@ -11,7 +11,7 @@
  * should be empty.
  */  
 void initializeProcStructures() {
-    // int i, j;
+    int i, j;
 
     // // marks all entriesin the memory map as FREE
     // for(i = 0; i < 8; i++) {
@@ -105,5 +105,8 @@ void addToReady(struct PCB *pcb) {
  * pointer to it.
  */
 struct PCB *removeFromReady() {
-
+    struct PCB *head = readyHead->next;
+    readyHead->next = head->next;
+    head->next->prev = readyHead;
+    return head;
 }
