@@ -11,28 +11,27 @@
  * should be empty.
  */  
 void initializeProcStructures() {
-    int i, j;
+    // int i, j;
 
-    // marks all entriesin the memory map as FREE
-    for(i = 0; i < 8; i++) {
-        memoryMap[i] = FREE;
-    }
+    // // marks all entriesin the memory map as FREE
+    // for(i = 0; i < 8; i++) {
+    //     memoryMap[i] = FREE;
+    // }
 
-    // sets the values of all PCBs in the pcbPool
-    for(j = 0; j < 8; j++) {
-        pcbPool[j].name[0] = NULL;
-        pcbPool[j].state = DEFUNCT;
-        pcbPool[j].segment = 0x0000;
-        pcbPool[j].stackPointer = 0x0000;
-    }
+    // // sets the values of all PCBs in the pcbPool
+    // for(j = 0; j < 8; j++) {
+    //     pcbPool[j].name[0] = NULL;
+    //     pcbPool[j].state = DEFUNCT;
+    //     pcbPool[j].segment = 0x0000;
+    //     pcbPool[j].stackPointer = 0x0000;
+    // }
 
-    // idleProc.name = 
-    idleProc.state = READY;
-    idleProc.segment = 0x0000;
-    idleProc.stackPointer = 0x0000;
+    // // idleProc.name = 
+    // idleProc.state = READY;
+    // idleProc.segment = 0x0000;
+    // idleProc.stackPointer = 0x0000;
 
-    running = &idleProc;
-
+    // running = &idleProc;
 }
 
 /*
@@ -57,7 +56,7 @@ int getFreeMemorySegment() {
  * the memory map.
  */
 void releaseMemorySegment(int seg) {
-    memoryMap[seg] = FREE; // is this the segment or the index of the segment?
+    memoryMap[seg] = FREE;
 }
 
 /*
@@ -66,7 +65,15 @@ void releaseMemorySegment(int seg) {
  * be marked as STARTING. Return NULL if there are no PCBs available.
  */
 struct PCB *getFreePCB() {
+    int i;
 
+    for(i = 0; i < 8; i++) {
+        if(pcbPool[i].state == DEFUNCT) {
+            return &pcbPool[i];
+        }
+    }
+
+    return NULL;
 }
 
 /*
