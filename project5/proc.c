@@ -82,7 +82,10 @@ struct PCB *getFreePCB() {
  * of its name to 0x00.
  */
 void releasePCB(struct PCB *pcb) {
-
+    pcb->state = DEFUNCT;
+    pcb->next = NULL;
+    pcb->prev = NULL;
+    pcb->name[0] = 0x00;
 }
 
 /*
