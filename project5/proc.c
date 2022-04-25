@@ -51,6 +51,7 @@ int getFreeMemorySegment() {
 
     for(i = 0; i < 8; i++) {
         if(memoryMap[i] == FREE) {
+            memoryMap[i] == USED;
             return i;
         }
     }
