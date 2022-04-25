@@ -84,6 +84,8 @@ int main() {
 
     // interrupt(0x21, 0x07, "mes\0", 0, 0);
 
+    initializeProcStructures();
+
     makeInterrupt21();
     interrupt(0x21, 0x04, "shell\0", 0, 0);
     //makeTimerInterrupt();
@@ -310,7 +312,7 @@ int fileNameLen(char *filename) {
 // check if the segment is valid
 // and if both are true, execute the program
 int executeProgram(char* name) {
-    int file, i, j, segmentIndex, segment;
+    int file, i, j, segment;
     struct PCB *program;
     char buf[13312];
 
@@ -320,27 +322,32 @@ int executeProgram(char* name) {
         printString("eP error: File does not exist\0");
         return -1;
     }
+ 
+    segment = getFreeMemorySegment();
 
-    segmentIndex = getFreeMemorySegment();
-
-    if(segmentIndex == -1) {
+    if(segment == -1) {
+        printString("eP error: no free memory segments\0");
         return -2;
-    } else {
-        segment = memoryMap[segmentIndex];
     }
+
+    program = getFreePCB();
+
+    if(program == NULL) {
+        printString("eP error: no free pcbs\0");
+    }
+
+    for(j = 0; j < 7; j++) {
+        program->name[j] = name[j];
+    }
+
+    program->state = STARTING;
+    program->segment = segment;
+    program->stackPointer = 0xFF00;
 
     while(i < 13312) {
         putInMemory(segment, i, buf[i]);
         i += 1;
     }
-
-    program = getFreePCB();
-    for(j = 0; j < 7; j++) {
-        program->name[j] = name[j];
-    }
-    program->state = STARTING;
-    program->segment = segment;
-    program->stackPointer = 0xFF00;
 
     addToReady(program);
 
