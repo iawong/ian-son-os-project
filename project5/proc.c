@@ -32,6 +32,9 @@ void initializeProcStructures() {
     // idleProc.stackPointer = 0x0000;
 
     // running = &idleProc;
+
+    readyHead->next = readyTail;
+    readyTail->prev = readyHead;
 }
 
 /*
@@ -92,7 +95,9 @@ void releasePCB(struct PCB *pcb) {
  * Add the provided PCB to the tail of the ready queue.
  */
 void addToReady(struct PCB *pcb) {
-
+    readyTail->prev->next = pcb;
+    pcb->next = readyTail;
+    readyTail->prev = pcb;
 }
 
 /*
