@@ -11,7 +11,7 @@ int handleInterrupt21(int ax, int bx, int cx, int dx);
 int readfile(char *filename, char *buf);
 int findFile(struct directory *dir, char *filename, char *buf);
 int fileNameLen(char *filename);
-int executeProgram(char* name, int segment);
+int executeProgram(char* name);
 void terminate();
 int writeSector(char *buffer, int sector);
 int deleteFile(char *fname);
@@ -228,7 +228,7 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
         return readfile(str, buf);
     } else if(ax == 0x04) {
         str = bx;
-        return executeProgram(str, cx);
+        return executeProgram(str);
     } else if(ax == 0x05) {
         terminate();
     } else if(ax == 0x06) {
@@ -308,8 +308,8 @@ int fileNameLen(char *filename) {
 // check if the program file exists
 // check if the segment is valid
 // and if both are true, execute the program
-int executeProgram(char* name, int segment) {
-    int file, i;
+int executeProgram(char* name) {
+    int file, i, segment;
     char buf[13312];
 
     file = readfile(name, buf);
@@ -318,6 +318,8 @@ int executeProgram(char* name, int segment) {
         printString("eP error: File does not exist\0");
         return -1;
     }
+
+    segment = getFreeMemorySegment();
 
     if(segment == 0x0000 || segment >= 0xA000 || segment == 0x1000) {
         printString("Invalid segment\0");
