@@ -1,4 +1,5 @@
 #include "proc.h"
+#include "string.h"
 
 /*
  * This function initializes all of the global variables and 
@@ -13,28 +14,28 @@
 void initializeProcStructures() {
     int i, j;
 
-    // // marks all entriesin the memory map as FREE
-    // for(i = 0; i < 8; i++) {
-    //     memoryMap[i] = FREE;
-    // }
+    // marks all entriesin the memory map as FREE
+    for(i = 0; i < 8; i++) {
+        memoryMap[i] = FREE;
+    }
 
-    // // sets the values of all PCBs in the pcbPool
-    // for(j = 0; j < 8; j++) {
-    //     pcbPool[j].name[0] = NULL;
-    //     pcbPool[j].state = DEFUNCT;
-    //     pcbPool[j].segment = 0x0000;
-    //     pcbPool[j].stackPointer = 0x0000;
-    // }
+    // sets the values of all PCBs in the pcbPool
+    for(j = 0; j < 8; j++) {
+        pcbPool[j].name[0] = NULL;
+        pcbPool[j].state = DEFUNCT;
+        pcbPool[j].segment = 0x0000;
+        pcbPool[j].stackPointer = 0x0000;
+    }
 
-    // // idleProc.name = 
-    // idleProc.state = READY;
-    // idleProc.segment = 0x0000;
-    // idleProc.stackPointer = 0x0000;
+    strcpy(idleProc.name, "IDLE\0");
+    idleProc.state = READY;
+    idleProc.segment = 0x0000;
+    idleProc.stackPointer = 0x0000;
 
-    // running = &idleProc;
+    running = &idleProc;
 
-    readyHead->next = readyTail;
-    readyTail->prev = readyHead;
+    readyHead = NULL;
+    readyTail = NULL;
 }
 
 /*
