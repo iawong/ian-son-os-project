@@ -86,7 +86,7 @@ int main() {
 
     makeInterrupt21();
     interrupt(0x21, 0x04, "shell\0", 0, 0);
-    makeTimerInterrupt();
+    //makeTimerInterrupt();
 
     while(1);
 
@@ -310,7 +310,8 @@ int fileNameLen(char *filename) {
 // check if the segment is valid
 // and if both are true, execute the program
 int executeProgram(char* name) {
-    int file, i, segment;
+    int file, i, j, segmentIndex, segment;
+    struct PCB *program;
     char buf[13312];
 
     file = readfile(name, buf);
@@ -320,11 +321,12 @@ int executeProgram(char* name) {
         return -1;
     }
 
-    segment = getFreeMemorySegment();
+    segmentIndex = getFreeMemorySegment();
 
-    if(segment == 0x0000 || segment >= 0xA000 || segment == 0x1000) {
-        printString("Invalid segment\0");
+    if(segmentIndex == -1) {
         return -2;
+    } else {
+        segment = memoryMap[segmentIndex];
     }
 
     while(i < 13312) {
@@ -332,7 +334,18 @@ int executeProgram(char* name) {
         i += 1;
     }
 
-    launchProgram(segment);
+    program = getFreePCB();
+    for(j = 0; j < 7; j++) {
+        program->name[j] = name[j];
+    }
+    program->state = STARTING;
+    program->segment = segment;
+    program->stackPointer = 0xFF00;
+
+    addToReady(program);
+
+    initializeProgram(segment);
+    return 1;
 }
 
 // terminate a running program by resetting the segments
