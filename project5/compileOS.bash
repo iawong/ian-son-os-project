@@ -19,7 +19,6 @@ bcc -ansi -c -o proc.o proc.c
 as86 kernel.asm -o kernel_asm.o
 as86 lib.asm -o lib.o
 
-ld86 -o kernel -d kernel.o kernel_asm.o
 ld86 -o kernel -d kernel.o proc.o kernel_asm.o
 ld86 -o uprog1 -d uprog1.o lib.o
 ld86 -o uprog2 -d uprog2.o lib.o
@@ -37,6 +36,5 @@ gcc -o loadFile loadFile.c
 ./loadFile uprog2
 ./loadFile shell
 ./loadFile tEditor
-./loadFile userLib
 
 bochs -f opsys.bxrc

@@ -1,4 +1,5 @@
 #define MAIN
+#include "proc.h"
 
 void putChar(int row, int column, char c, char color);
 void putStr(int row, int column, char string[], char color);

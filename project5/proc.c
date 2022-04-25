@@ -1,5 +1,4 @@
 #include "proc.h"
-#include <string.h>
 
 /*
  * This function initializes all of the global variables and 
@@ -27,7 +26,11 @@ void initializeProcStructures() {
         pcbPool[j].stackPointer = 0x0000;
     }
 
-    strcpy(idleProc.name, "IDLE\0");
+    idleProc.name[0] = 'I';
+    idleProc.name[1] = 'D';
+    idleProc.name[2] = 'L';
+    idleProc.name[3] = 'E';
+    idleProc.name[4] = '\0';
     idleProc.state = READY;
     idleProc.segment = 0x0000;
     idleProc.stackPointer = 0x0000;
