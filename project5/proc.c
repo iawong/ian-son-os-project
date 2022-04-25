@@ -57,7 +57,7 @@ int getFreeMemorySegment() {
  * the memory map.
  */
 void releaseMemorySegment(int seg) {
-
+    memoryMap[seg] = FREE; // is this the segment or the index of the segment?
 }
 
 /*

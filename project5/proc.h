@@ -48,7 +48,7 @@ struct PCB {
  */
 #ifdef MAIN
   struct PCB *running;		// Pointer to the PCB of the running process
-  struct PCB *idleProc;		// Pointer to a PCB for the idle process
+  struct PCB idleProc;		// Pointer to a PCB for the idle process
   struct PCB *readyHead; 	// Pointer to the PCB at the head of the ready queue
   struct PCB *readyTail;	// Pointer to the PCB at the tail of the ready queue
   struct PCB pcbPool[8];	// Pool of PCBs to be used
