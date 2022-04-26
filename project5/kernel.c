@@ -322,21 +322,21 @@ int executeProgram(char* name) {
         printString("eP error: File does not exist\0");
         return -1;
     }
- 
-    index = getFreeMemorySegment();
+    
+    index = getFreeMemorySegment(); // store index of free memory from memoryMap
 
     if(index == -1) {
         printString("eP error: no free memory segments\0");
         return -2;
     }
-    segment = 0x2000 + (index * 0x1000);
+    segment = 0x2000 + (index * 0x1000); // calculate the segment number
 
-    program = getFreePCB();
+    program = getFreePCB(); // find free PCB from pcbPool
 
     if(program == NULL) {
         printString("eP error: no free pcbs\0");
     }
-
+    
     for(j = 0; j < 7; j++) {
         program->name[j] = name[j];
     }
