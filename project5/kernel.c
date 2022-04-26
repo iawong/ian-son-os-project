@@ -312,7 +312,7 @@ int fileNameLen(char *filename) {
 // check if the segment is valid
 // and if both are true, execute the program
 int executeProgram(char* name) {
-    int file, i, j, segment;
+    int file, i, j, index, segment;
     struct PCB *program;
     char buf[13312];
 
@@ -323,12 +323,13 @@ int executeProgram(char* name) {
         return -1;
     }
  
-    segment = getFreeMemorySegment();
+    index = getFreeMemorySegment();
 
-    if(segment == -1) {
+    if(index == -1) {
         printString("eP error: no free memory segments\0");
         return -2;
     }
+    segment = 0x2000 + (index * 0x1000);
 
     program = getFreePCB();
 
