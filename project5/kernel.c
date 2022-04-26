@@ -88,7 +88,7 @@ int main() {
 
     makeInterrupt21();
     interrupt(0x21, 0x04, "shell\0", 0, 0);
-    //makeTimerInterrupt();
+    makeTimerInterrupt();
 
     while(1);
 
