@@ -352,6 +352,7 @@ int executeProgram(char* name) {
 
     addToReady(program);
 
+    // launchProgram(segment);
     initializeProgram(segment);
     return 1;
 }
