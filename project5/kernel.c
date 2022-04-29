@@ -509,8 +509,30 @@ int writeFile(char *fname, char *buffer, int sectors) {
 }
 
 void handleTimerInterrupt(int segment, int sp) {
-	
-  printString("tic\0");
-  returnFromTimer(segment,sp);
+	struct PCB *pcbToRun; // this is the new process that will be run
+    struct PCB *pcbSaved; // this is the new process we're adding to the ready queue
+
+    if(running != &idleProc) {
+        pcbSaved->segment = segment;
+        pcbSaved->stackPointer = sp;
+        pcbSaved->state = READY;
+
+        addToReady(pcbSaved);
+        pcbToRun = removeFromReady();
+        pcbToRun->state = RUNNING;
+        running = pcbToRun;
+
+        returnFromTimer(running->segment, running->stackPointer);
+    } else {
+        pcbToRun = removeFromReady();
+        if(pcbToRun != NULL) {
+            pcbToRun->state = RUNNING;
+            running = pcbToRun;
+
+            returnFromTimer(running->segment, running->stackPointer);
+        } else {
+            returnFromTimer(running->segment, running->stackPointer);
+        }
+    }
 }
 
