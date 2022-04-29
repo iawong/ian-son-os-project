@@ -323,7 +323,9 @@ int executeProgram(char* name) {
         return -1;
     }
     
+    setKernelDataSegment();
     index = getFreeMemorySegment(); // store index of free memory from memoryMap
+    restoreDataSegment();
 
     if(index == -1) {
         printString("eP error: no free memory segments\0");
@@ -360,10 +362,10 @@ int executeProgram(char* name) {
 // terminate a running program by resetting the segments
 void terminate() {
     int segment;
-    // resetSegments();
+
     segment = running->segment;
     running->state = DEFUNCT;
-    memoryMap[(segment - 0x2000) / 0x1000] = FREE;
+    releaseMemorySegment((segment - 0x2000) / 0x1000); // clear pcb pool as well?
 
     while(1);
 }
