@@ -13,7 +13,7 @@
 void initializeProcStructures() {
     int i, j;
 
-    // marks all entriesin the memory map as FREE
+    // marks all entries in the memory map as FREE
     for(i = 0; i < 8; i++) {
         memoryMap[i] = FREE;
     }
