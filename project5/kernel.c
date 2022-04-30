@@ -308,8 +308,8 @@ int executeProgram(char* name) {
     addToReady(program);
     restoreDataSegment();
 
-    // launchProgram(segment);
-    initializeProgram(segment);
+    launchProgram(segment);
+    // initializeProgram(segment);
     return 1;
 }
 
