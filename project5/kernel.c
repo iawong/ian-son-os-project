@@ -19,6 +19,7 @@ int deleteFile(char *fname);
 int writeFile(char *fname, char *buffer, int sectors);
 int readText(char *buf);
 void handleTimerInterrupt(int segment, int stackPointer);
+void kStrCopy(char *src, char *dest, int len);
 
 typedef char byte;
 
@@ -33,57 +34,6 @@ struct directory {
 
 
 int main() {
-
-	// initializeProcStructures();
-
-    // char *buf = "\0";
-    // char ch;
-
-    // printString("Hello World\0");
-    
-    // printString("Type a char: \0");
-    // ch = readChar();
-    // buf[0] = ch;
-    // printString("Read: \0");
-    // printString(buf);
-    // printString("\n\r\0");
-
-    // char line[20];
-    // printString("Enter a line: \0");
-    // readString(line);
-    // printString("\n\0");
-    // printString(line);
-
-    // char buffer[512];
-    // readSector(buffer, 30);
-    // printString(buffer);
-
-    // char line[80];
-    // char ch[1];
-    // makeInterrupt21();
-    // interrupt(0x21, 0x00, 0, 0, 0);
-    // interrupt(0x21, 0x00, "Type>\0", 0, 0);
-    // interrupt(0x21, 0x11, ch, 0, 0);
-    // line[0] = ch[0];
-    // line[1] = 0x00;
-    // interrupt(0x21, 0x00, line, 0, 0);
-
-    // char buffer[13312];
-    // makeInterrupt21();
-    // interrupt(0x21, 0x03, "messag\0", buffer, 0);
-
-    // interrupt(0x21, 0x00, buffer, 0, 0);
-
-    // char buf[13312];
-    // char buf2[13312];
-    // makeInterrupt21();
-    // interrupt(0x21, 0x03, "messag\0", buf, 0, 0);
-    // interrupt(0x21, 0x08, "mes2\0", buf, 1, 0);
-    // interrupt(0x21, 0x03, "mes2\0", buf2, 0, 0);
-    // interrupt(0x21, 0x00, buf2, 0, 0);
-
-    // interrupt(0x21, 0x07, "mes\0", 0, 0);
-
     initializeProcStructures();
 
     makeInterrupt21();
@@ -91,8 +41,6 @@ int main() {
     makeTimerInterrupt();
 
     while(1);
-
-    // return 0;
 }
 
 // places a character at a specifc location on the screen given
@@ -549,3 +497,17 @@ void handleTimerInterrupt(int segment, int sp) {
     }
 }
 
+/* kStrCopy(char *src, char *dest, int len) copy at most len
+ * characters from the src which is addressed relative to the current 
+ * data segment into dest which is addressed relative to the 
+ * kernel's data segment (0x1000).
+ */
+void kStrCopy (char *src, char *dest, int len) {
+    int i = 0;
+    for(i = 0; i < len; i++) {
+        putInMemory(0x1000, dest + i, src[i]);
+        if(src[i] == 0x00) {
+            return;
+        }
+    }
+}
