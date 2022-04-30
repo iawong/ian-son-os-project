@@ -475,9 +475,11 @@ void handleTimerInterrupt(int segment, int sp) {
 
     if(running != &idleProc) {
         if(running->state == DEFUNCT) {
+            setKernelDataSegment();
             pcbToRun = removeFromReady();
             pcbToRun->state = RUNNING;
             running = pcbToRun;
+            restoreDataSegment();
 
             returnFromTimer(running->segment, running->stackPointer);
         } else {
@@ -485,19 +487,25 @@ void handleTimerInterrupt(int segment, int sp) {
             pcbSaved->stackPointer = sp;
             pcbSaved->state = READY;
 
+            setKernelDataSegment();
             addToReady(pcbSaved);
             pcbToRun = removeFromReady();
             pcbToRun->state = RUNNING;
             running = pcbToRun;
+            restoreDataSegment();
 
             returnFromTimer(running->segment, running->stackPointer);
         }
     } else {
+        setKernelDataSegment();
         pcbToRun = removeFromReady();
+        restoreDataSegment();
         if(pcbToRun != NULL) {
+            setKernelDataSegment();
             pcbToRun->state = RUNNING;
             running = pcbToRun;
-
+            restoreDataSegment();
+            
             returnFromTimer(running->segment, running->stackPointer);
         } else {
             returnFromTimer(running->segment, running->stackPointer);
