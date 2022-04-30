@@ -1,4 +1,6 @@
 main() {
+    // enableInterrupts(); // enable concurrency (where should I put this?)
+
     while(1) {
         int i, j, k, l, sectors;
 

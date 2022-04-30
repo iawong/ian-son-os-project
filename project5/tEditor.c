@@ -3,6 +3,9 @@ main() {
     char filename[7];
     char buffer[13312];
     char ch;
+
+    enableInterrupts(); // enable concurrency
+
     printString("Enter File Name: \r\n\0");
     readString(filename);
     printString("\r\n");
