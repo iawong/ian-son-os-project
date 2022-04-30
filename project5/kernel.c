@@ -34,7 +34,9 @@ struct directory {
 
 
 int main() {
+    setKernelDataSegment();
     initializeProcStructures();
+    restoreDataSegment();
 
     makeInterrupt21();
     interrupt(0x21, 0x04, "shell\0", 0, 0);
@@ -281,15 +283,18 @@ int executeProgram(char* name) {
     }
     segment = 0x2000 + (index * 0x1000); // calculate the segment number
 
+    setKernelDataSegment();
     program = getFreePCB(); // find free PCB from pcbPool
+    restoreDataSegment();
 
     if(program == NULL) {
         printString("eP error: no free pcbs\0");
     }
     
-    for(j = 0; j < 7; j++) {
-        program->name[j] = name[j];
-    }
+    // for(j = 0; j < 7; j++) {
+    //     program->name[j] = name[j];
+    // }
+    kStrCopy(name, program->name, 7);
 
     program->state = STARTING;
     program->segment = segment;
@@ -299,8 +304,9 @@ int executeProgram(char* name) {
         putInMemory(segment, i, buf[i]);
         i += 1;
     }
-
+    setKernelDataSegment();
     addToReady(program);
+    restoreDataSegment();
 
     // launchProgram(segment);
     initializeProgram(segment);
@@ -313,7 +319,9 @@ void terminate() {
 
     segment = running->segment;
     running->state = DEFUNCT;
+    setKernelDataSegment();
     releaseMemorySegment((segment - 0x2000) / 0x1000); // clear pcb pool as well?
+    restoreDataSegment();
 
     while(1);
 }
