@@ -77,6 +77,7 @@ struct PCB *getFreePCB() {
 
     for(i = 0; i < 8; i++) {
         if(pcbPool[i].state == DEFUNCT) {
+            pcbPool->state = STARTING;
             return &pcbPool[i];
         }
     }
