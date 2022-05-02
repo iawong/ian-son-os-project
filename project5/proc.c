@@ -1,4 +1,5 @@
 #include "proc.h"
+#include "string.h"
 
 /*
  * This function initializes all of the global variables and 
@@ -77,7 +78,7 @@ struct PCB *getFreePCB() {
 
     for(i = 0; i < 8; i++) {
         if(pcbPool[i].state == DEFUNCT) {
-            pcbPool->state = STARTING;
+            pcbPool[i].state = STARTING;
             return &pcbPool[i];
         }
     }
@@ -92,15 +93,18 @@ struct PCB *getFreePCB() {
  */
 void releasePCB(struct PCB *pcb) {
     pcb->state = DEFUNCT;
+    // pcb->prev->next = pcb->next;
     pcb->next = NULL;
     pcb->prev = NULL;
-    pcb->name[0] = 0x00;
+    pcb->name[0] = NULL;
 }
 
 /*
  * Add the provided PCB to the tail of the ready queue.
  */
 void addToReady(struct PCB *pcb) {
+    struct PCB *last;
+
     readyTail->prev->next = pcb;
     pcb->next = readyTail;
     readyTail->prev = pcb;

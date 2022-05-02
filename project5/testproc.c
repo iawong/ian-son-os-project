@@ -76,26 +76,28 @@ void testGetFreePCB() {
 	assert(pcb == NULL);
 }
 
-void testReleasePCB() { //segmentation fault
-	struct PCB *head, *middle, *tail;
+void testReleasePCB() {
+	struct PCB *pcb;
 
-	head->next = middle;
-	middle->prev = head;
-	middle->next = tail;
-	tail->prev = middle;
+	initializeProcStructures();
 
-	middle->name[0] = 'a';
-	middle->state = STARTING;
-
-	releasePCB(middle);
-	assert(middle->name[0] == 0x00);
-	assert(middle->state == DEFUNCT);
-	assert(middle->next == NULL);
-	assert(middle->prev == NULL);
+	pcb = getFreePCB();
+	
+	releasePCB(pcb);
+	assert(pcb->name[0] == 0x00);
+	assert(pcb->state == DEFUNCT);
+	assert(pcb->next == NULL);
+	assert(pcb->prev == NULL);
 }
 
 void testAddToReady() {
+	struct PCB *pcb;
 
+	initializeProcStructures();
+
+	pcb = getFreePCB();
+
+	addToReady(pcb);
 }
 
 void testRemoveFromReady() {
@@ -113,5 +115,7 @@ int main() {
 	testGetFreePCB();
 	printf("Testing releasePCB\n");
 	testReleasePCB();
+	printf("Testing addToReady\n");
+	testAddToReady();
 	printf("done\n");	
 }
