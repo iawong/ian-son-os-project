@@ -315,7 +315,7 @@ void terminate() {
     int segment;
     setKernelDataSegment();
     segment = running->segment;
-    releaseMemorySegment((segment - 0x2000) / 0x1000); // clear pcb pool as well?
+    releaseMemorySegment((segment - 0x2000) / 0x1000);
     releasePCB(running);
     restoreDataSegment();
 
@@ -467,46 +467,30 @@ int writeFile(char *fname, char *buffer, int sectors) {
 
 void handleTimerInterrupt(int segment, int sp) {
 	struct PCB *pcbToRun; // this is the new process that will be run
-    struct PCB *pcbSaved; // this is the new process we're adding to the ready queue
+    int newSeg, newSP;
+
+    setKernelDataSegment();
+    running->segment = segment;
+    running->stackPointer = sp;
+    running->state = READY;
 
     if(running != &idleProc) {
-        if(running->state == DEFUNCT) {
-            setKernelDataSegment();
-            pcbToRun = removeFromReady();
-            pcbToRun->state = RUNNING;
-            running = pcbToRun;
-            restoreDataSegment();
-
-            returnFromTimer(running->segment, running->stackPointer);
-        } else {
-            pcbSaved->segment = segment;
-            pcbSaved->stackPointer = sp;
-            pcbSaved->state = READY;
-
-            setKernelDataSegment();
-            addToReady(pcbSaved);
-            pcbToRun = removeFromReady();
-            pcbToRun->state = RUNNING;
-            running = pcbToRun;
-            restoreDataSegment();
-
-            returnFromTimer(running->segment, running->stackPointer);
-        }
-    } else {
-        setKernelDataSegment();
-        pcbToRun = removeFromReady();
-        restoreDataSegment();
-        if(pcbToRun != NULL) {
-            setKernelDataSegment();
-            pcbToRun->state = RUNNING;
-            running = pcbToRun;
-            restoreDataSegment();
-            
-            returnFromTimer(running->segment, running->stackPointer);
-        } else {
-            returnFromTimer(running->segment, running->stackPointer);
-        }
+        addToReady(running);
     }
+
+    running = NULL;
+
+    pcbToRun = removeFromReady();
+
+    if(pcbToRun != NULL) {
+        running = pcbToRun;
+        newSeg = pcbToRun->segment;
+        newSP = pcbToRun->stackPointer;
+    } else {
+        running = &idleProc;
+    }
+    restoreDataSegment();
+    returnFromTimer(newSeg, newSP);
 }
 
 /* kStrCopy(char *src, char *dest, int len) copy at most len
