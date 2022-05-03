@@ -275,15 +275,11 @@ int executeProgram(char* name) {
     
     setKernelDataSegment();
     index = getFreeMemorySegment(); // store index of free memory from memoryMap
-<<<<<<< HEAD
     program = getFreePCB(); // find free PCB from pcbPool
-=======
->>>>>>> 27e13adfa6c32a48d49951b3eb7a676be61ab6be
     restoreDataSegment();
 
     if(index == -1) {
         printString("eP error: no free memory segments\0");
-<<<<<<< HEAD
         return -2;
     }
 
@@ -294,23 +290,6 @@ int executeProgram(char* name) {
     
     segment = 0x2000 + (index * 0x1000); // calculate the segment number
 
-=======
-        return -2;
-    }
-    segment = 0x2000 + (index * 0x1000); // calculate the segment number
-
-    setKernelDataSegment();
-    program = getFreePCB(); // find free PCB from pcbPool
-    restoreDataSegment();
-
-    if(program == NULL) {
-        printString("eP error: no free pcbs\0");
-    }
-    
-    // for(j = 0; j < 7; j++) {
-    //     program->name[j] = name[j];
-    // }
->>>>>>> 27e13adfa6c32a48d49951b3eb7a676be61ab6be
     kStrCopy(name, program->name, 7);
 
     program->state = STARTING;
@@ -325,31 +304,18 @@ int executeProgram(char* name) {
     addToReady(program);
     restoreDataSegment();
 
-<<<<<<< HEAD
     // launchProgram(segment);
     initializeProgram(segment);
-=======
-    launchProgram(segment);
-    // initializeProgram(segment);
->>>>>>> 27e13adfa6c32a48d49951b3eb7a676be61ab6be
     return 1;
 }
 
 // terminate a running program by resetting the segments
 void terminate() {
     int segment;
-<<<<<<< HEAD
     setKernelDataSegment();
     segment = running->segment;
     releaseMemorySegment((segment - 0x2000) / 0x1000); // clear pcb pool as well?
     releasePCB(running);
-=======
-
-    segment = running->segment;
-    running->state = DEFUNCT;
-    setKernelDataSegment();
-    releaseMemorySegment((segment - 0x2000) / 0x1000); // clear pcb pool as well?
->>>>>>> 27e13adfa6c32a48d49951b3eb7a676be61ab6be
     restoreDataSegment();
 
     while(1);
