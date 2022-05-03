@@ -262,10 +262,11 @@ int fileNameLen(char *filename) {
 // check if the segment is valid
 // and if both are true, execute the program
 int executeProgram(char* name) {
-    int file, i, j, index, segment;
+    int file, i, j, index, segment, offset;
     struct PCB *program;
     char buf[13312];
 
+    offset = 0x000;
     file = readfile(name, buf);
 
     if(file == -1) {
@@ -275,7 +276,6 @@ int executeProgram(char* name) {
     
     setKernelDataSegment();
     index = getFreeMemorySegment(); // store index of free memory from memoryMap
-    program = getFreePCB(); // find free PCB from pcbPool
     restoreDataSegment();
 
     if(index == -1) {
@@ -283,26 +283,27 @@ int executeProgram(char* name) {
         return -2;
     }
 
+    segment = 0x1000 * (index + 2); // calculate the segment number
+
+    for(i = 0; i < 13312; i++) {
+        putInMemory(segment, offset, buf[i]);
+        offset++;
+    }
+
+    setKernelDataSegment();
+    program = getFreePCB(); // find free PCB from pcbPool
+    program->state = STARTING;
+    program->segment = segment;
+    program->stackPointer = 0xFF00;
+    addToReady(program);
+    restoreDataSegment();
+
     if(program == NULL) {
         printString("eP error: no free pcbs\0");
         return -2;
     }
-    
-    segment = 0x2000 + (index * 0x1000); // calculate the segment number
 
     kStrCopy(name, program->name, 7);
-
-    program->state = STARTING;
-    program->segment = segment;
-    program->stackPointer = 0xFF00;
-
-    while(i < 13312) {
-        putInMemory(segment, i, buf[i]);
-        i += 1;
-    }
-    setKernelDataSegment();
-    addToReady(program);
-    restoreDataSegment();
 
     // launchProgram(segment);
     initializeProgram(segment);
