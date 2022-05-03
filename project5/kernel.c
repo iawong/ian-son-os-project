@@ -20,6 +20,8 @@ int writeFile(char *fname, char *buffer, int sectors);
 int readText(char *buf);
 void handleTimerInterrupt(int segment, int stackPointer);
 void kStrCopy(char *src, char *dest, int len);
+void yield();
+void showProcesses();
 
 typedef char byte;
 
@@ -193,6 +195,8 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
         char *buffer = cx;
         str = bx;
         return writeFile(str, buffer, dx);        
+    } else if(ax == 0x09) {
+        yield();
     } else {
         return -1;
     }
@@ -504,6 +508,57 @@ void kStrCopy (char *src, char *dest, int len) {
         putInMemory(0x1000, dest + i, src[i]);
         if(src[i] == 0x00) {
             return;
+        }
+    }
+}
+
+// causes executing process to give up remaining time and go back to
+// the ready queue
+void yield() {
+    running = running->segment;
+    running = running->stackPointer;
+    running->state = READY;
+
+    addToReady(running);
+}
+
+void showProcesses() {
+    int i, segment, b;
+    struct PCB *pcb;
+
+    char *one = "One\n";
+    char *two = "Two\n";
+    char *three = "Three\n";
+    char *four = "Four\n";
+    char *five = "Five\n";
+    char *six = "Six\n";
+    char *seven = "Seven\n";
+    char *eight = "Eight\n";
+
+    char numbers[8];
+
+    numbers[0] = one;
+    numbers[1] = two;
+    numbers[2] = three;
+    numbers[3] = four;
+    numbers[4] = five;
+    numbers[5] = six;
+    numbers[6] = seven;
+    numbers[7] = eight;
+
+    b = 1;
+    pcb = readyHead;
+    for(i = 0; i < 8; i++) {
+        if(memoryMap[i] == USED) {
+            segment = 0x1000 * (i + 2);
+            while(b = 1) {
+                if(pcb->segment == segment) {
+                    printString(numbers[i]);
+                    printString(pcb->name);
+                    printString("\r\n");
+                    b = 0;
+                }
+            }
         }
     }
 }
