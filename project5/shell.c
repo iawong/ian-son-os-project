@@ -52,7 +52,7 @@ main() {
             if(i == 6) {
                 filename[6] = '\0';
             }
-            executeProgram(filename, 0x2000);
+            executeProgram(filename);
             printString("\r\n");
         } else if(line[0] == 'd' && line[1] == 'e' && line[2] == 'l' && line[3] == 'e' &&
         line[4] == 't' && line[5] == 'e') {

@@ -14,8 +14,8 @@ int readFile(char filename[], char buffer[]) {
     return interrupt(0x21, 0x03, filename, buffer, 0);
 }
 
-void executeProgram(char filename[], int sector) {
-    interrupt(0x21, 0x04, filename, sector, 0);
+void executeProgram(char filename[]) {
+    interrupt(0x21, 0x04, filename, 0, 0);
 }
 
 void terminate() {
