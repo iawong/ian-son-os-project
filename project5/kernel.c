@@ -39,7 +39,7 @@ int main() {
     restoreDataSegment();
 
     makeInterrupt21();
-    interrupt(0x21, 0x04, "shell\0", 0, 0);
+    interrupt(0x21, 0x04, "uprog1\0", 0, 0);
     makeTimerInterrupt();
 
     while(1);

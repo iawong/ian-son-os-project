@@ -7,7 +7,6 @@
 
 #include "stdio.h"
 #include "assert.h"
-#include <string.h>
 #include "proc.h"
 
 void testInit() {	
@@ -91,16 +90,11 @@ void testReleasePCB() {
 }
 
 void testAddToReady() {
-<<<<<<< HEAD
 	struct PCB *pcb, *pcb1;
-=======
-	struct PCB *pcb;
->>>>>>> 27e13adfa6c32a48d49951b3eb7a676be61ab6be
 
 	initializeProcStructures();
 
 	pcb = getFreePCB();
-<<<<<<< HEAD
 	pcb1 = getFreePCB();
 
 	addToReady(pcb);
@@ -128,14 +122,6 @@ void testRemoveFromReady() {
 
 	head = removeFromReady();
 	assert(head == pcb);
-=======
-
-	addToReady(pcb);
-}
-
-void testRemoveFromReady() {
-
->>>>>>> 27e13adfa6c32a48d49951b3eb7a676be61ab6be
 }
 
 int main() {
@@ -151,10 +137,7 @@ int main() {
 	testReleasePCB();
 	printf("Testing addToReady\n");
 	testAddToReady();
-<<<<<<< HEAD
 	printf("Testing removeFromReady\n");
 	testRemoveFromReady();
-=======
->>>>>>> 27e13adfa6c32a48d49951b3eb7a676be61ab6be
 	printf("done\n");	
 }

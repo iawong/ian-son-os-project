@@ -103,7 +103,6 @@ void releasePCB(struct PCB *pcb) {
  * Add the provided PCB to the tail of the ready queue.
  */
 void addToReady(struct PCB *pcb) {
-<<<<<<< HEAD
     if(readyHead == NULL) {
         readyHead = pcb;
         readyTail = pcb;
@@ -115,13 +114,6 @@ void addToReady(struct PCB *pcb) {
         pcb->next = NULL;
         readyTail = pcb;
     }
-=======
-    struct PCB *last;
-
-    readyTail->prev->next = pcb;
-    pcb->next = readyTail;
-    readyTail->prev = pcb;
->>>>>>> 27e13adfa6c32a48d49951b3eb7a676be61ab6be
 }
 
 /*
