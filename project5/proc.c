@@ -1,5 +1,4 @@
 #include "proc.h"
-#include "string.h"
 
 /*
  * This function initializes all of the global variables and 
