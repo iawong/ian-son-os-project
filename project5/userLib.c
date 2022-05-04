@@ -37,3 +37,7 @@ int writeFile(char filename[], char buffer[], int sectors) {
 int readCharShell(char *buf) {
     return interrupt(0x21, 0x11, buf, 0, 0);
 }
+
+void showProcesses() {
+    return interrupt(0x21, 0x0A, 0, 0, 0);
+}

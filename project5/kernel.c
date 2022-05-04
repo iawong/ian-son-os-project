@@ -197,6 +197,9 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
         return writeFile(str, buffer, dx);        
     } else if(ax == 0x09) {
         yield();
+    } else if(ax == 0x0A) {
+        showProcesses();
+        return 1;
     } else {
         return -1;
     }
@@ -522,6 +525,7 @@ void yield() {
     addToReady(running);
 }
 
+// lists all processes
 void showProcesses() {
     int i, segment, b;
     struct PCB *pcb;
@@ -557,6 +561,8 @@ void showProcesses() {
                     printString(pcb->name);
                     printString("\r\n");
                     b = 0;
+                } else {
+                    pcb = pcb->next;
                 }
             }
         }

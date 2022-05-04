@@ -9,3 +9,5 @@ void readFile();
 void executeProgram();
 
 void terminate();
+
+void showProcesses();

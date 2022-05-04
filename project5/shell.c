@@ -133,6 +133,8 @@ main() {
                     printString("\r\n");
                 }
             }
+        } else if(line[0] == 'p' && line[1] == 's') {
+            showProcesses();
         } else {
             printString("Unrecognized command\0\r\n");
         }
