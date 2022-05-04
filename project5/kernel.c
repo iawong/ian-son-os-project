@@ -527,7 +527,7 @@ void yield() {
 
 // lists all processes
 void showProcesses() {
-    int i, segment, b;
+    int i, segment;
     struct PCB *pcb;
 
     char *one = "One\n";
@@ -550,17 +550,15 @@ void showProcesses() {
     numbers[6] = seven;
     numbers[7] = eight;
 
-    b = 1;
-    pcb = readyHead;
     for(i = 0; i < 8; i++) {
         if(memoryMap[i] == USED) {
             segment = 0x1000 * (i + 2);
-            while(b = 1) {
+            pcb = readyHead;
+            while(pcb != NULL) {
                 if(pcb->segment == segment) {
                     printString(numbers[i]);
                     printString(pcb->name);
                     printString("\r\n");
-                    b = 0;
                 } else {
                     pcb = pcb->next;
                 }
