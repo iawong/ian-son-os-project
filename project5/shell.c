@@ -1,6 +1,4 @@
 main() {
-    // enableInterrupts(); // enable concurrency (where should I put this?)
-
     while(1) {
         int i, j, k, l, sectors, segment;
 
@@ -19,6 +17,8 @@ main() {
         char line[100];
         char filename[7];
         char filename2[7];
+
+        enableInterrupts();
 
         printString("Shell> \0");
         readString(line);
