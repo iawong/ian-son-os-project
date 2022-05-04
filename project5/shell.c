@@ -2,7 +2,7 @@ main() {
     // enableInterrupts(); // enable concurrency (where should I put this?)
 
     while(1) {
-        int i, j, k, l, sectors;
+        int i, j, k, l, sectors, segment;
 
         typedef char byte;
 
@@ -135,6 +135,11 @@ main() {
             }
         } else if(line[0] == 'p' && line[1] == 's') {
             showProcesses();
+        } else if(line[0] == 'k' && line[1] == 'i', line[2] == 'l', line[3] == 'l') {
+            // read segment number
+            // call kill on the segment number
+            // print successful if kill returns 1
+            // print unsuccessful if kill returns -1
         } else {
             printString("Unrecognized command\0\r\n");
         }

@@ -22,6 +22,7 @@ void handleTimerInterrupt(int segment, int stackPointer);
 void kStrCopy(char *src, char *dest, int len);
 void yield();
 void showProcesses();
+int kill(int segment);
 
 typedef char byte;
 
@@ -199,7 +200,8 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
         yield();
     } else if(ax == 0x0A) {
         showProcesses();
-        return 1;
+    } else if(ax == 0x0B) {
+        return kill(bx);
     } else {
         return -1;
     }
@@ -550,6 +552,7 @@ void showProcesses() {
     numbers[6] = seven;
     numbers[7] = eight;
 
+    setKernelDataSegment();
     for(i = 0; i < 8; i++) {
         if(memoryMap[i] == USED) {
             segment = 0x1000 * (i + 2);
@@ -565,4 +568,24 @@ void showProcesses() {
             }
         }
     }
+    restoreDataSegment();
+}
+
+int kill(int segment) {
+    int index, i;
+
+    index = (segment / 0x1000) - 2;
+    setKernelDataSegment();
+    if(memoryMap[index] == USED) {
+        for(i = 0; i < 8; i++) {
+            if(pcbPool[i].segment == segment) {
+                releaseMemorySegment(index);
+                releasePCB(&pcbPool[i]);
+                return 1;
+            }
+        }
+    } else {
+        return -1;
+    }
+    restoreDataSegment();
 }

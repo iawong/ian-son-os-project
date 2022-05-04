@@ -1,13 +1,23 @@
-void printString();
+void printString(char buf[]);
 
 void readChar();
 
-void readString();
+void readString(char *buf);
 
-void readFile();
+int readFile(char filename[], char buffer[]);
 
-void executeProgram();
+void executeProgram(char filename[]);
 
 void terminate();
 
+void mod(int a, int b);
+
+int deleteFile(char filename[]);
+
+int writeFile(char filename[], char buffer[], int sectors);
+
+int readCharShell(char *buf);
+
 void showProcesses();
+
+int kill(int segment);

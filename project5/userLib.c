@@ -1,3 +1,5 @@
+#include "userLib.h"
+
 void printString(char buf[]) {
     interrupt(0x21, 0x00, buf, 0, 0);
 }
@@ -40,4 +42,8 @@ int readCharShell(char *buf) {
 
 void showProcesses() {
     return interrupt(0x21, 0x0A, 0, 0, 0);
+}
+
+int kill(int segment) {
+    return interrupt(0x21, 0x0B, 0, 0, 0);
 }
