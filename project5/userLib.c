@@ -1,7 +1,7 @@
 #include "userLib.h"
 
-int printString(char buf[]) {
-    return interrupt(0x21, 0x00, buf, 0, 0);
+int printString(char *str) {
+    return interrupt(0x21, 0x00, str, 0, 0);
 }
 
 int readChar() {

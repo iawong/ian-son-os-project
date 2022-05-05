@@ -1,4 +1,4 @@
-int printString(char buf[]);
+int printString(char *str);
 
 int readChar();
 

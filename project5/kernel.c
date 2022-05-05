@@ -43,7 +43,7 @@ int main() {
     initializeProcStructures();
     restoreDataSegment();
 
-    printInt(2);
+    //printInt(2);
 
     makeInterrupt21();
     interrupt(0x21, 0x04, "shell\0", 0, 0);
@@ -232,6 +232,7 @@ int readfile(char *filename, char *buf) {
 
     if(dirEntryNum == -1) {
         printString("rF error: File does not exist\0");
+        //interrupt(0x21, 0x00, "rf file not found\0", 0, 0);
         return -1;
     }
 
@@ -604,5 +605,6 @@ int kill(int segment) {
 
 //added to system calls
 void printHello() {
-    printString("Hello\0");
+    //printString("Hello\0");
+    interrupt(0x21, 0x00, "hello\0", 0, 0);
 }

@@ -6,48 +6,53 @@ void printStuff();
 
 int main() {
     while(1) {
-        // int i, j, k, l, sectors, segment;
+        int i, j, k, l, sectors, segment;
 
-        // typedef char byte;
+        typedef char byte;
 
-        // struct dirEntry {
-        //     char name[6];
-        //     byte sectors[26];
-        // };
+        struct dirEntry {
+            char name[6];
+            byte sectors[26];
+        };
 
-        // struct directory {
-        //     struct dirEntry entries[16];
-        // };
+        struct directory {
+            struct dirEntry entries[16];
+        };
 
-        // char buffer[13312];
-        // char line[100];
-        // char filename[7];
-        // char filename2[7];
+        char buffer[13312];
+        char line[100];
+        char filename[7];
+        char filename2[7];
 
         enableInterrupts();
 
-        // printString("Shell> \0");
-        // readString(line);
-        // printString("\r\n");
+        printString("Shell> \0");
+        readString(line);
+        printString("\r\n");
 
-    //     if(line[0] == 't' && line[1] == 'y' && line[2] == 'p' && line[3] == 'e') {
-    //         char buf[13312];
-    //         for(i = 0; i < 6; i++) {
-    //         //     if(line[5 + i] == 0x00) { // if the current character is empty, add \0 and break
-    //         //         filename[i] = '\0';
-    //         //         break;
-    //         //     } else {
-    //             filename[i] = line[5 + i];
-    //         //     }
-    //         }
+        if(line[0] == 't' && line[1] == 'y' && line[2] == 'p' && line[3] == 'e') {
+            char buf[13312];
+            for(i = 0; i < 6; i++) {
+            //     if(line[5 + i] == 0x00) { // if the current character is empty, add \0 and break
+            //         filename[i] = '\0';
+            //         break;
+            //     } else {
+                filename[i] = line[5 + i];
+            //     }
+            }
 
-    //         // if(i == 6) { // if we've reached the end of for loop, add \0 to the end
-    //             filename[6] = '\0';
-    //         // }
-    //         readFile(filename, buf);
-    //         printString(buf);
-    //         //printString("\r\n");
-    //     } else if(line[0] == 'e' && line[1] == 'x' && line[2] == 'e' && line[3] == 'c' && 
+            // if(i == 6) { // if we've reached the end of for loop, add \0 to the end
+                filename[6] = '\0';
+            // }
+            j = readFile(filename, buf);
+            if (j == -1) {
+                printString("file not found\0");
+            } else {
+                printString("find found\0");
+            }
+            printString(buf);
+            //printString("\r\n");
+        } //else if(line[0] == 'e' && line[1] == 'x' && line[2] == 'e' && line[3] == 'c' && 
     //     line[4] == 'u' && line[5] == 't' && line[6] == 'e') {
     //         for(i = 0; i < 6; i++) {
     //         //     if(line[8 + i] == 0x00) {
