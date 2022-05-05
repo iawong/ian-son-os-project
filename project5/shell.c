@@ -151,8 +151,8 @@ int main() {
     //     } else {
     //         printString("Unrecognized command\0\r\n");
     //     }
-        printHello();
-        printStuff();
+        printHello(); // here is the call
+        //printStuff();
     }
 }
 

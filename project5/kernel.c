@@ -43,7 +43,7 @@ int main() {
     initializeProcStructures();
     restoreDataSegment();
 
-    //printInt(1);
+    printInt(2);
 
     makeInterrupt21();
     interrupt(0x21, 0x04, "shell\0", 0, 0);
@@ -202,14 +202,14 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
     } else if(ax == 0x0B) {
         return kill(bx);
     } else if(ax == 0x0C) {
-        printHello();
+        printHello(); // shell will try to run this and print hello
     } else {
         return -1;
     }
 }
 
 void printInt(int i) {
-    char *numb[2];
+    int *numb[2];
     numb[0] = i;
     numb[1] = '\0';
     printString(numb);
@@ -602,6 +602,7 @@ int kill(int segment) {
     restoreDataSegment();
 }
 
+//added to system calls
 void printHello() {
     printString("Hello\0");
 }
