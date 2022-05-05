@@ -13,11 +13,11 @@ void printInt(int i);
 int readfile(char *filename, char *buf);
 int findFile(struct directory *dir, char *filename, char *buf);
 int fileNameLen(char *filename);
-int executeProgram(char* name);
+int executeProgram(char *filename);
 void terminate();
 int writeSector(char *buffer, int sector);
 int deleteFile(char *fname);
-int writeFile(char *fname, char *buffer, int sectors);
+int writeFile(char *filename, char *buffer, int sectors);
 int readText(char *buf);
 void handleTimerInterrupt(int segment, int stackPointer);
 void kStrCopy(char *src, char *dest, int len);
@@ -42,8 +42,6 @@ int main() {
     setKernelDataSegment();
     initializeProcStructures();
     restoreDataSegment();
-
-    //printInt(2);
 
     makeInterrupt21();
     interrupt(0x21, 0x04, "shell\0", 0, 0);
@@ -279,13 +277,13 @@ int fileNameLen(char *filename) {
 // check if the program file exists
 // check if the segment is valid
 // and if both are true, execute the program
-int executeProgram(char* name) {
+int executeProgram(char* filename) {
     int file, i, j, index, segment, offset;
     struct PCB *program;
     char buf[13312];
 
     offset = 0x000;
-    file = readfile(name, buf);
+    file = readfile(filename, buf);
 
     if(file == -1) {
         printString("eP error: File does not exist\0");
@@ -321,7 +319,7 @@ int executeProgram(char* name) {
         return -2;
     }
 
-    kStrCopy(name, program->name, 7);
+    kStrCopy(filename, program->name, 7);
 
     // launchProgram(segment);
     initializeProgram(segment);
@@ -381,7 +379,7 @@ int deleteFile(char *fname) {
 // given a filename and the file contents stored in a buffer
 // find an empty directory entry, and a number of empty sectors
 // to store the file in
-int writeFile(char *fname, char *buffer, int sectors) {
+int writeFile(char *filename, char *buffer, int sectors) {
     int dirEntryNum, i, j, k, l, m, sectorsWritten;
     char *buf;
     struct directory diskDir;
@@ -395,7 +393,7 @@ int writeFile(char *fname, char *buffer, int sectors) {
     readSector(&diskDir, 2);
     readSector(map, 1);
 
-    dirEntryNum = findFile(&diskDir, fname, buf);
+    dirEntryNum = findFile(&diskDir, filename, buf);
 
     if(sectors > 26) {
         sectors = 26;
@@ -439,8 +437,8 @@ int writeFile(char *fname, char *buffer, int sectors) {
     if(m == 512) {
         // writing file name to diskdir
         for(k = 0; k < 6; k++) {
-            if(fname[k] != 0x00 || fname[k] != '\0') {
-                diskDir.entries[dirEntryNum].name[k] = fname[k];
+            if(filename[k] != 0x00 || filename[k] != '\0') {
+                diskDir.entries[dirEntryNum].name[k] = filename[k];
             } else {
                 diskDir.entries[dirEntryNum].name[k] = 0x00;
             }
@@ -461,8 +459,8 @@ int writeFile(char *fname, char *buffer, int sectors) {
     } else {
         // writing file name to diskdir
         for(k = 0; k < 6; k++) {
-            if(fname[k] != 0x00 || fname[k] != '\0') {
-                diskDir.entries[dirEntryNum].name[k] = fname[k];
+            if(filename[k] != 0x00 || filename[k] != '\0') {
+                diskDir.entries[dirEntryNum].name[k] = filename[k];
             } else {
                 diskDir.entries[dirEntryNum].name[k] = 0x00;
             }
@@ -605,6 +603,5 @@ int kill(int segment) {
 
 //added to system calls
 void printHello() {
-    //printString("Hello\0");
-    interrupt(0x21, 0x00, "hello\0", 0, 0);
+    printString("Hello\0");
 }

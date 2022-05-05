@@ -12,6 +12,8 @@ bcc -ansi -c -o kernel.o kernel.c
 bcc -ansi -c -o uprog1.o uprog1.c
 bcc -ansi -c -o uprog2.o uprog2.c
 bcc -ansi -c -o uprog3.o uprog3.c
+bcc -ansi -c -o uprog6.o uprog6.c
+bcc -ansi -c -o uprog7.o uprog7.c
 bcc -ansi -c -o shell.o shell.c
 bcc -ansi -c -o userLib.o userLib.c
 bcc -ansi -c -o tEditor.o tEditor.c
@@ -24,8 +26,10 @@ ld86 -o kernel -d kernel.o proc.o kernel_asm.o
 ld86 -o uprog1 -d uprog1.o lib.o
 ld86 -o uprog2 -d uprog2.o lib.o
 ld86 -o uprog3 -d uprog3.o lib.o
-ld86 -o shell -d shell.o userLib.o lib.o
-ld86 -o tEditor -d tEditor.o userLib.o lib.o
+ld86 -o uprog6 -d uprog6.o lib.o userlib.o
+ld86 -o uprog7 -d uprog7.o lib.o userlib.o
+ld86 -o shell -d shell.o lib.o userLib.o 
+ld86 -o tEditor -d tEditor.o lib.o userLib.o 
 
 dd if=kernel of=floppya.img bs=512 conv=notrunc seek=3
 
@@ -37,6 +41,8 @@ gcc -o loadFile loadFile.c
 ./loadFile uprog1
 ./loadFile uprog2
 ./loadFile uprog3
+./loadfile uprog6
+./loadfile uprog7
 ./loadFile shell
 ./loadFile tEditor
 

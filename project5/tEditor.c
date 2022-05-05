@@ -1,3 +1,5 @@
+#include "userLib.h"
+
 int mod(int a, int b);
 
 int main() {
