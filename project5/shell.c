@@ -37,7 +37,6 @@ int main() {
             readFile(filename, buffer);
             
             printString(buffer);
-            free(buffer);
         } else if(line[0] == 'e' && line[1] == 'x' && line[2] == 'e' && line[3] == 'c' && 
         line[4] == 'u' && line[5] == 't' && line[6] == 'e') {
             for(i = 0; i < 6; i++) {

@@ -44,6 +44,10 @@ int kill(int segment) {
     return interrupt(0x21, 0x0B, 0, 0, 0);
 }
 
+void yield() {
+    interrupt(0x21, 0x09, 0, 0, 0);
+}
+
 void printHello() {
     interrupt(0x21, 0x0C, 0, 0, 0);
 }

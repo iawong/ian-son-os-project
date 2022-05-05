@@ -20,4 +20,6 @@ void showProcesses();
 
 int kill(int segment);
 
+void yield();
+
 void printHello();
