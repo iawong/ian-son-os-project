@@ -1,22 +1,22 @@
 #include "userLib.h"
 
-void printString(char buf[]) {
-    interrupt(0x21, 0x00, buf, 0, 0);
+int printString(char buf[]) {
+    return interrupt(0x21, 0x00, buf, 0, 0);
 }
 
-void readChar() {
-    interrupt(0x21, 0x11, 0, 0, 0);
+int readChar() {
+    return interrupt(0x21, 0x11, 0, 0, 0);
 }
 
-void readString(char *buf) {
-    interrupt(0x21, 0x01, buf, 0, 0);
+int readString(char *buf) {
+    return interrupt(0x21, 0x01, buf, 0, 0);
 }
 
 int readFile(char filename[], char buffer[]) {
     return interrupt(0x21, 0x03, filename, buffer, 0);
 }
 
-void executeProgram(char filename[]) {
+int executeProgram(char filename[]) {
     interrupt(0x21, 0x04, filename, 0, 0);
 }
 

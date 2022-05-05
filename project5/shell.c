@@ -1,7 +1,7 @@
 #include "userLib.h"
 
-int readSector(char *buf, int absSector);
 int mod(int a, int b);
+int readSector(char *buf, int absSector);
 
 main() {
     while(1) {
@@ -30,35 +30,37 @@ main() {
         printString("\r\n");
 
         if(line[0] == 't' && line[1] == 'y' && line[2] == 'p' && line[3] == 'e') {
+            char buf[13312];
             for(i = 0; i < 6; i++) {
-                if(line[5 + i] == 0x00) { // if the current character is empty, add \0 and break
-                    filename[i] = '\0';
-                    break;
-                } else {
-                    filename[i] = line[5 + i];
-                }
+            //     if(line[5 + i] == 0x00) { // if the current character is empty, add \0 and break
+            //         filename[i] = '\0';
+            //         break;
+            //     } else {
+                filename[i] = line[5 + i];
+            //     }
             }
-            if(i == 6) { // if we've reached the end of for loop, add \0 to the end
+
+            // if(i == 6) { // if we've reached the end of for loop, add \0 to the end
                 filename[6] = '\0';
-            }
-            readFile(filename, buffer);
-            printString(buffer);
-            printString("\r\n");
+            // }
+            readFile(filename, buf);
+            printString(buf);
+            //printString("\r\n");
         } else if(line[0] == 'e' && line[1] == 'x' && line[2] == 'e' && line[3] == 'c' && 
         line[4] == 'u' && line[5] == 't' && line[6] == 'e') {
             for(i = 0; i < 6; i++) {
-                if(line[8 + i] == 0x00) {
-                    filename[i] = '\0';
-                    break;
-                } else {
-                    filename[i] = line[8 + i];
-                }
+            //     if(line[8 + i] == 0x00) {
+            //         filename[i] = '\0';
+            //         break;
+            //     } else {
+                filename[i] = line[8 + i];
+            //     }
             }
-            if(i == 6) {
+            // if(i == 6) {
                 filename[6] = '\0';
-            }
+            // }
             executeProgram(filename);
-            printString("\r\n");
+            // printString("\r\n");
         } else if(line[0] == 'd' && line[1] == 'e' && line[2] == 'l' && line[3] == 'e' &&
         line[4] == 't' && line[5] == 'e') {
             for(i = 0; i < 6; i++) {
@@ -151,6 +153,14 @@ main() {
     }
 }
 
+// self defined mod function
+int mod(int a, int b) {
+    while(a > b) {
+        a = a - b;
+    }
+    return a;
+}
+
 // reads from a sector on the disk
 int readSector(char *buf, int absSector) {
     int relSector = mod(absSector, 18) + 1;
@@ -165,11 +175,3 @@ int readSector(char *buf, int absSector) {
     return 1;
 }
 
-// self defined mod function
-int mod(int a, int b) {
-    while(a > b) {
-        a = a - b;
-    }
-
-    return a;
-}

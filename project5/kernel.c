@@ -3,12 +3,13 @@
 
 void putChar(int row, int column, char c, char color);
 void putStr(int row, int column, char string[], char color);
-void printString(char *str);
+int printString(char *str);
 int readChar();
 int readString(char *buf);
 int readSector(char *buf, int absSector);
 int mod(int a, int b);
 int handleInterrupt21(int ax, int bx, int cx, int dx);
+void printInt(int i);
 int readfile(char *filename, char *buf);
 int findFile(struct directory *dir, char *filename, char *buf);
 int fileNameLen(char *filename);
@@ -40,6 +41,8 @@ int main() {
     setKernelDataSegment();
     initializeProcStructures();
     restoreDataSegment();
+
+    printInt(1);
 
     makeInterrupt21();
     interrupt(0x21, 0x04, "shell\0", 0, 0);
@@ -78,15 +81,16 @@ void putStr(int row, int column, char string[], char color) {
 }
 
 // calls an interrupt to print a char array onto the screen
-void printString(char *str) {
+int printString(char *str) {
     int i = 0;
     while(str[i] != '\0') {
         char al = str[i];
         char ah = 0x0E;
         int ax = ah * 256 + al;
         interrupt(0x10, ax, 0, 0, 0);
-        i += 1;
+        i++;
     }
+    return i;
 }
 
 // calls an interrupt to read a single character from the keyboard
@@ -162,11 +166,7 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
     int i = 0;
     if(ax == 0x00) {
         str = bx;
-        printString(str);
-        while(str[i] != '\0') {
-            i += 1;
-        }
-        return i;
+        return printString(str);
     } else if(ax == 0x11) {
         str = bx;
         str[0] = readChar();
@@ -203,6 +203,13 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
     } else {
         return -1;
     }
+}
+
+void printInt(int i) {
+    int *numb[2];
+    numb[0] = i;
+    numb[1] = '\0';
+    printString(numb);
 }
 
 // find if a file exists in the disk directory
@@ -568,8 +575,7 @@ void showProcesses() {
     //     }
     // }
     // restoreDataSegment();
-    interrupt(0x21, 0x00, "test\0", 0, 0);
-    //printString("test\0");
+    printString("test\0");
 }
 
 int kill(int segment) {

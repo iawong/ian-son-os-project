@@ -1,12 +1,12 @@
-void printString(char buf[]);
+int printString(char buf[]);
 
-void readChar();
+int readChar();
 
-void readString(char *buf);
+int readString(char *buf);
 
 int readFile(char filename[], char buffer[]);
 
-void executeProgram(char filename[]);
+int executeProgram(char filename[]);
 
 void terminate();
 
