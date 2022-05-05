@@ -24,10 +24,6 @@ void terminate() {
     interrupt(0x21, 0x05, 0, 0, 0);
 }
 
-void mod(int a, int b) {
-    interrupt(0x21, 0x06, a, b, 0);
-}
-
 int deleteFile(char filename[]) {
     return interrupt(0x21, 0x07, filename, 0, 0);
 }
@@ -41,7 +37,7 @@ int readCharShell(char *buf) {
 }
 
 void showProcesses() {
-    return interrupt(0x21, 0x0A, 0, 0, 0);
+    interrupt(0x21, 0x0A, 0, 0, 0);
 }
 
 int kill(int segment) {

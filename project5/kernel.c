@@ -187,8 +187,6 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
         return executeProgram(str);
     } else if(ax == 0x05) {
         terminate();
-    } else if(ax == 0x06) {
-        return mod(bx, cx);
     } else if(ax == 0x07) {
         str = bx;
         return deleteFile(bx);
@@ -529,46 +527,48 @@ void yield() {
 
 // lists all processes
 void showProcesses() {
-    int i, segment;
-    struct PCB *pcb;
+    // int i, segment;
+    // struct PCB *pcb;
 
-    char *one = "One\n";
-    char *two = "Two\n";
-    char *three = "Three\n";
-    char *four = "Four\n";
-    char *five = "Five\n";
-    char *six = "Six\n";
-    char *seven = "Seven\n";
-    char *eight = "Eight\n";
+    // char *one = "One\n";
+    // char *two = "Two\n";
+    // char *three = "Three\n";
+    // char *four = "Four\n";
+    // char *five = "Five\n";
+    // char *six = "Six\n";
+    // char *seven = "Seven\n";
+    // char *eight = "Eight\n";
 
-    char numbers[8];
+    // char numbers[8];
 
-    numbers[0] = one;
-    numbers[1] = two;
-    numbers[2] = three;
-    numbers[3] = four;
-    numbers[4] = five;
-    numbers[5] = six;
-    numbers[6] = seven;
-    numbers[7] = eight;
+    // numbers[0] = one;
+    // numbers[1] = two;
+    // numbers[2] = three;
+    // numbers[3] = four;
+    // numbers[4] = five;
+    // numbers[5] = six;
+    // numbers[6] = seven;
+    // numbers[7] = eight;
 
-    setKernelDataSegment();
-    for(i = 0; i < 8; i++) {
-        if(memoryMap[i] == USED) {
-            segment = 0x1000 * (i + 2);
-            pcb = readyHead;
-            while(pcb != NULL) {
-                if(pcb->segment == segment) {
-                    printString(numbers[i]);
-                    printString(pcb->name);
-                    printString("\r\n");
-                } else {
-                    pcb = pcb->next;
-                }
-            }
-        }
-    }
-    restoreDataSegment();
+    // setKernelDataSegment();
+    // for(i = 0; i < 8; i++) {
+    //     if(memoryMap[i] == USED) {
+    //         segment = 0x1000 * (i + 2);
+    //         pcb = readyHead;
+    //         while(pcb != NULL) {
+    //             if(pcb->segment == segment) {
+    //                 printString(numbers[i]);
+    //                 printString(pcb->name);
+    //                 printString("\r\n");
+    //             } else {
+    //                 pcb = pcb->next;
+    //             }
+    //         }
+    //     }
+    // }
+    // restoreDataSegment();
+    interrupt(0x21, 0x00, "test\0", 0, 0);
+    //printString("test\0");
 }
 
 int kill(int segment) {

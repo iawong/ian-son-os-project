@@ -10,8 +10,6 @@ void executeProgram(char filename[]);
 
 void terminate();
 
-void mod(int a, int b);
-
 int deleteFile(char filename[]);
 
 int writeFile(char filename[], char buffer[], int sectors);

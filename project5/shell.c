@@ -1,3 +1,8 @@
+#include "userLib.h"
+
+int readSector(char *buf, int absSector);
+int mod(int a, int b);
+
 main() {
     while(1) {
         int i, j, k, l, sectors, segment;
@@ -158,4 +163,13 @@ int readSector(char *buf, int absSector) {
     interrupt(0x13, ax, buf, cx, dx);
 
     return 1;
+}
+
+// self defined mod function
+int mod(int a, int b) {
+    while(a > b) {
+        a = a - b;
+    }
+
+    return a;
 }
