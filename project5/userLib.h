@@ -19,3 +19,5 @@ int readCharShell(char *buf);
 void showProcesses();
 
 int kill(int segment);
+
+void printHello();

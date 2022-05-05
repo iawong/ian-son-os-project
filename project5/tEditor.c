@@ -1,4 +1,6 @@
-main() {
+int mod(int a, int b);
+
+int main() {
     int k, sectors;
     char filename[7];
     char buffer[13312];
@@ -74,4 +76,12 @@ int readText(char *buf) {
     buf[i] = 0x00;
 
     return buf;
+}
+
+// self defined mod function
+int mod(int a, int b) {
+    while(a > b) {
+        a = a - b;
+    }
+    return a;
 }

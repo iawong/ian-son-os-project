@@ -24,6 +24,7 @@ void kStrCopy(char *src, char *dest, int len);
 void yield();
 void showProcesses();
 int kill(int segment);
+void printHello();
 
 typedef char byte;
 
@@ -42,7 +43,7 @@ int main() {
     initializeProcStructures();
     restoreDataSegment();
 
-    printInt(1);
+    //printInt(1);
 
     makeInterrupt21();
     interrupt(0x21, 0x04, "shell\0", 0, 0);
@@ -200,13 +201,15 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
         showProcesses();
     } else if(ax == 0x0B) {
         return kill(bx);
+    } else if(ax == 0x0C) {
+        printHello();
     } else {
         return -1;
     }
 }
 
 void printInt(int i) {
-    int *numb[2];
+    char *numb[2];
     numb[0] = i;
     numb[1] = '\0';
     printString(numb);
@@ -479,6 +482,7 @@ int writeFile(char *fname, char *buffer, int sectors) {
     }
 }
 
+// saves running process and starts a new one
 void handleTimerInterrupt(int segment, int sp) {
 	struct PCB *pcbToRun; // this is the new process that will be run
     int newSeg, newSP;
@@ -578,6 +582,7 @@ void showProcesses() {
     printString("test\0");
 }
 
+// kill the process running on the given segment
 int kill(int segment) {
     int index, i;
 
@@ -595,4 +600,8 @@ int kill(int segment) {
         return -1;
     }
     restoreDataSegment();
+}
+
+void printHello() {
+    printString("Hello\0");
 }

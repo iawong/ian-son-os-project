@@ -17,7 +17,7 @@ int readFile(char filename[], char buffer[]) {
 }
 
 int executeProgram(char filename[]) {
-    interrupt(0x21, 0x04, filename, 0, 0);
+    return interrupt(0x21, 0x04, filename, 0, 0);
 }
 
 void terminate() {
@@ -42,4 +42,8 @@ void showProcesses() {
 
 int kill(int segment) {
     return interrupt(0x21, 0x0B, 0, 0, 0);
+}
+
+void printHello() {
+    interrupt(0x21, 0x0C, 0, 0, 0);
 }
