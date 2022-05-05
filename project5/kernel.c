@@ -520,11 +520,12 @@ void kStrCopy (char *src, char *dest, int len) {
 // causes executing process to give up remaining time and go back to
 // the ready queue
 void yield() {
-    running = running->segment;
-    running = running->stackPointer;
-    running->state = READY;
+    interrupt(0x00, 0, 0, 0, 0);
+    // running = running->segment;
+    // running = running->stackPointer;
+    // running->state = READY;
 
-    addToReady(running);
+    // addToReady(running);
 }
 
 // lists all processes
