@@ -194,7 +194,8 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
         str = bx;
         return writeFile(str, buffer, dx);        
     } else if(ax == 0x09) {
-        yield();
+        //yield();
+        showProcesses();
     } else if(ax == 0x0A) {
         showProcesses();
     } else if(ax == 0x0B) {

@@ -37,7 +37,7 @@ int readCharShell(char *buf) {
 }
 
 void showProcesses() {
-    interrupt(0x21, 0x0A, 0, 0, 0);
+    interrupt(0x21, 0x09, 0, 0, 0);
 }
 
 int kill(int segment) {
