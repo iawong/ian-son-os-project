@@ -22,7 +22,7 @@ int readText(char *buf);
 void handleTimerInterrupt(int segment, int stackPointer);
 void kStrCopy(char *src, char *dest, int len);
 void yield();
-void showProcesses();
+char* showProcesses();
 int kill(int segment);
 void printHello();
 
@@ -194,10 +194,9 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
         str = bx;
         return writeFile(str, buffer, dx);        
     } else if(ax == 0x09) {
-        //yield();
-        showProcesses();
+        yield();
     } else if(ax == 0x0A) {
-        showProcesses();
+        return showProcesses();
     } else if(ax == 0x0B) {
         return kill(bx);
     } else if(ax == 0x0C) {
@@ -538,48 +537,54 @@ void yield() {
 }
 
 // lists all processes
-void showProcesses() {
-    // int i, segment;
-    // struct PCB *pcb;
+char* showProcesses() {
+    int i, j, segment;
+    struct PCB *pcb;
+    char *buf, *numb, *name;
 
-    // char *one = "One\n";
-    // char *two = "Two\n";
-    // char *three = "Three\n";
-    // char *four = "Four\n";
-    // char *five = "Five\n";
-    // char *six = "Six\n";
-    // char *seven = "Seven\n";
-    // char *eight = "Eight\n";
+    char *one = "Zero\n";
+    char *two = "One\n";
+    char *three = "Two\n";
+    char *four = "Three\n";
+    char *five = "Four\n";
+    char *six = "Five\n";
+    char *seven = "Six\n";
+    char *eight = "Seven\n";
 
-    // char numbers[8];
+    char numbers[8];
 
-    // numbers[0] = one;
-    // numbers[1] = two;
-    // numbers[2] = three;
-    // numbers[3] = four;
-    // numbers[4] = five;
-    // numbers[5] = six;
-    // numbers[6] = seven;
-    // numbers[7] = eight;
+    numbers[0] = one;
+    numbers[1] = two;
+    numbers[2] = three;
+    numbers[3] = four;
+    numbers[4] = five;
+    numbers[5] = six;
+    numbers[6] = seven;
+    numbers[7] = eight;
 
-    // setKernelDataSegment();
-    // for(i = 0; i < 8; i++) {
-    //     if(memoryMap[i] == USED) {
-    //         segment = 0x1000 * (i + 2);
-    //         pcb = readyHead;
-    //         while(pcb != NULL) {
-    //             if(pcb->segment == segment) {
-    //                 printString(numbers[i]);
-    //                 printString(pcb->name);
-    //                 printString("\r\n");
-    //             } else {
-    //                 pcb = pcb->next;
-    //             }
-    //         }
-    //     }
-    // }
-    // restoreDataSegment();
-    printString("test\0");
+    //buf = "*****\0";
+
+    setKernelDataSegment();
+    for(i = 0; i < 8; i++) {
+        if(memoryMap[i] == USED) {
+            pcb = &pcbPool[i];
+            //printString(numbers[i]);
+            //printString(" \0");
+            //printString(pcb->name);
+            for(j = 0; j < 7; j ++) {
+                if(j == 3) {
+                    break;
+                } else {
+                    buf[j] = pcb->name[j];
+                }
+            }
+            buf[j+1] = '\0';
+            
+        }
+    }
+    restoreDataSegment();
+
+    return pcb->name;
 }
 
 // kill the process running on the given segment
