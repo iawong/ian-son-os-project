@@ -1,11 +1,11 @@
-int printString();
+int printString(char *str);
 
 void readChar();
 
-int readString();
+void readString(char *buf);
 
-int readFile();
+int readFile(char *filename, char *buf);
 
-int executeProgram();
+int executeProgram(char* name, int segment);
 
 void terminate();

@@ -27,8 +27,11 @@ struct directory {
 int main() {
     makeInterrupt21();
     interrupt(0x21, 0x04, "shell\0", 0x2000, 0);
+    interrupt(0x21, 0x00, "Done!\n\r\0", 0, 0);
 
     while(1);
+
+    return 0;
 }
 
 // places a character at a specifc location on the screen given
@@ -55,8 +58,7 @@ void putStr(int row, int column, char string[], char color) {
             putChar(row, column, string[i], color);
             column += 1;
         }
-
-        i += 1;
+        i++;
     }
 }
 
@@ -68,7 +70,7 @@ int printString(char *str) {
         char ah = 0x0E;
         int ax = ah * 256 + al;
         interrupt(0x10, ax, 0, 0, 0);
-        i += 1;
+        i++;
     }
     return i;
 }
@@ -146,7 +148,8 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
     int i = 0;
     if(ax == 0x00) {
         str = bx;
-        return printString(str);
+        printString((char *) bx);
+        return i;
     } else if(ax == 0x11) {
         str = bx;
         str[0] = readChar();
@@ -189,7 +192,7 @@ int readfile(char *filename, char *buf) {
     dirEntryNum = findFile(&diskDir, filename, buf);
 
     if(dirEntryNum == -1) {
-        printString("File does not exist\0");
+        printString("rf error: File not found\0");
         return -1;
     }
 
