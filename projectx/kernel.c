@@ -11,6 +11,7 @@ int findFile(struct directory *dir, char *filename, char *buf);
 int fileNameLen(char *filename);
 int executeProgram(char* name, int segment);
 void terminate();
+void print(char *str);
 
 typedef char byte;
 
@@ -192,7 +193,7 @@ int readfile(char *filename, char *buf) {
     dirEntryNum = findFile(&diskDir, filename, buf);
 
     if(dirEntryNum == -1) {
-        printString("rf error: File not found\0");
+        print("rf error: File not found\0");
         return -1;
     }
 
@@ -274,6 +275,8 @@ int executeProgram(char* name, int segment) {
 void terminate() {
     resetSegments();
     interrupt(0x21, 0x04, "shell\0", 0x2000, 0);
-    // printString("I'm back!\0");
-    // while(1);
+}
+
+void print(char *str) {
+    printString(str);
 }
