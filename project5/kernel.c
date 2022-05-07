@@ -691,10 +691,11 @@ void showProcesses() {
         if(memoryMap[i] == USED) {
             pcb = &pcbPool[i];
             str = pcb->name;
-            while(*str != '\0') {
-                interrupt(0x10, 0x0E * 256 + *str, 0, 0, 0);
-                ++str;
-            }
+            // while(*str != '\0') {
+            //     interrupt(0x10, 0x0E * 256 + *str, 0, 0, 0);
+            //     ++str;
+            // }
+            printString(str);
             interrupt(0x10, 0x0E * 256 + '\n', 0, 0, 0);
             interrupt(0x10, 0x0E * 256 + '\r', 0, 0, 0);
         }
