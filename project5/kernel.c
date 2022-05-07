@@ -685,10 +685,33 @@ void showProcesses() {
     int i, j, segment;
     struct PCB *pcb;
     char *str;
+    char numbers[8];
+
+    char zero[6] = "Zero\0";
+    char one[6] = "One\0";
+    char two[6] = "Two\0";
+    char three[6] = "Three\0";
+    char four[6] = "Four\0";
+    char five[6] = "Five\0";
+    char six[6] = "Six\0";
+    char seven[6] = "Seven\0";
+
+    numbers[0] = zero;
+    numbers[1] = one;
+    numbers[2] = two;
+    numbers[3] = three;
+    numbers[4] = four;
+    numbers[5] = five;
+    numbers[6] = six;
+    numbers[7] = seven;
 
     setKernelDataSegment();
     for(i = 0; i < 8; i++) {
         if(memoryMap[i] == USED) {
+            printString(numbers[i]);
+
+            interrupt(0x10, 0x0E * 256 + ' ', 0, 0, 0);
+
             pcb = &pcbPool[i];
             str = pcb->name;
             printString(str);
