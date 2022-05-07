@@ -686,9 +686,9 @@ void showProcesses() {
     struct PCB *pcb;
     char *str;
     char numbers[8];
-    char zero[6];
-    char one[6];
-    char two[6];
+    char zero[5];
+    char one[4];
+    char two[4];
     char three[6];
     char four[6];
     char five[6];
@@ -754,8 +754,6 @@ void showProcesses() {
     setKernelDataSegment();
     for(i = 0; i < 8; i++) {
         if(memoryMap[i] == USED) {
-            printString(numbers[i]);
-
             interrupt(0x10, 0x0E * 256 + ' ', 0, 0, 0);
 
             pcb = &pcbPool[i];
