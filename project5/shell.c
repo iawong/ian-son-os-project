@@ -51,41 +51,21 @@ int main() {
                 filename[i] = line[7 + i];
             }
             filename[6] = '\0';
-            j = deleteFile(filename);
-
-            if(j == -1) {
-                printString("File not Found\r\n\0");
-            }
+            deleteFile(filename);
         } else if(line[0] == 'c' && line[1] == 'o' && line[2] == 'p' && line[3] == 'y') {
             for(i = 0; i < 6; i++) {
-                if(line[5 + i] == 0x00) { // if the current character is empty, add \0 and break
-                    filename[i] = '\0';
-                    break;
-                } else {
-                    filename[i] = line[5 + i];
-                }
+                filename[i] = line[5 + i];
             }
-            if(i == 6) { // if we've reached the end of for loop, add \0 to the end
-                filename[6] = '\0';
-            }
+            filename[6] = '\0';
 
             // get second filename
             for(j = 0; j < 6; j++) {
-                if(line[6 + i + j] == 0x00) { // if the current character is empty, add \0 and break
-                    filename2[j] = '\0';
-                    break;
-                } else {
-                    filename2[j] = line[6 + i + j];
-                }
-            }
-            if(j == 6) { // if we've reached the end of for loop, add \0 to the end
-                filename2[6] = '\0';
+                filename2[j] = line[6 + i + j];
             }
 
-            l = readFile(filename, buffer); // read file contents into buffer
-            if(l == -1) {
-                printString("File not Found\r\n\0");
-            }
+            filename2[6] = '\0';
+            
+            readFile(filename, buffer); // read file contents into buffer
 
             sectors = 0;
             k = 0;

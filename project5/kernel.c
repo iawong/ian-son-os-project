@@ -217,7 +217,7 @@ void printInt(int i) {
 // in which the contents of the file are stored
 int readfile(char *filename, char *buf) {
     int dirEntryNum, count, sectorNum, i;
-    char error[30];
+    char error[25];
     char *str;
 
     struct directory diskDir;
@@ -245,21 +245,16 @@ int readfile(char *filename, char *buf) {
         error[12] = 'l';
         error[13] = 'e';
         error[14] = ' ';
-        error[15] = 'd';
+        error[15] = 'n';
         error[16] = 'o';
-        error[17] = 'e';
-        error[18] = 's';
-        error[19] = ' ';
-        error[20] = 'n';
-        error[21] = 'o';
-        error[22] = 't';
-        error[23] = ' ';
-        error[24] = 'e';
-        error[25] = 'x';
-        error[26] = 'i';
-        error[27] = 's';
-        error[28] = 't';
-        error[29] = '\0';
+        error[17] = 't';
+        error[18] = ' ';
+        error[19] = 'f';
+        error[20] = 'o';
+        error[21] = 'u';
+        error[22] = 'n';
+        error[23] = 'd';
+        error[24] = '\0';
         printString(error);
         return -1;
     }
@@ -311,12 +306,40 @@ int executeProgram(char* filename) {
     int file, i, j, index, segment, offset;
     struct PCB *program;
     char buf[13312];
+    char error1[25];
+    char error2[33];
+    char error3[22];
 
     offset = 0x000;
     file = readfile(filename, buf);
 
     if(file == -1) {
-        printString("eP error: File does not exist\0");
+        error1[0] = 'e';
+        error1[1] = 'P';
+        error1[2] = ' ';
+        error1[3] = 'e';
+        error1[4] = 'r';
+        error1[5] = 'r';
+        error1[6] = 'o';
+        error1[7] = 'r';
+        error1[8] = ':';
+        error1[9] = ' ';
+        error1[10] = 'F';
+        error1[11] = 'i';
+        error1[12] = 'l';
+        error1[13] = 'e';
+        error1[14] = ' ';
+        error1[15] = 'n';
+        error1[16] = 'o';
+        error1[17] = 't';
+        error1[18] = ' ';
+        error1[19] = 'f';
+        error1[20] = 'o';
+        error1[21] = 'u';
+        error1[22] = 'n';
+        error1[23] = 'd';
+        error1[24] = '\0';
+        printString(error1);
         return -1;
     }
     
@@ -325,7 +348,40 @@ int executeProgram(char* filename) {
     restoreDataSegment();
 
     if(index == -1) {
-        printString("eP error: no free memory segments\0");
+        error2[0] = 'e';
+        error2[1] = 'P';
+        error2[2] = ' ';
+        error2[3] = 'e';
+        error2[4] = 'r';
+        error2[5] = 'r';
+        error2[6] = 'o';
+        error2[7] = 'r';
+        error2[8] = ':';
+        error2[9] = ' ';
+        error2[10] = 'n';
+        error2[11] = 'o';
+        error2[12] = ' ';
+        error2[13] = 'f';
+        error2[14] = 'r';
+        error2[15] = 'e';
+        error2[16] = 'e';
+        error2[17] = ' ';
+        error2[18] = 'm';
+        error2[19] = 'e';
+        error2[20] = 'm';
+        error2[21] = 'o';
+        error2[22] = 'r';
+        error2[23] = 'y';
+        error2[24] = ' ';
+        error2[25] = 's';
+        error2[26] = 'e';
+        error2[27] = 'g';
+        error2[28] = 'm';
+        error2[29] = 'e';
+        error2[30] = 'n';
+        error2[31] = 't';
+        error2[32] = '\0';
+        printString(error2);
         return -2;
     }
 
@@ -345,7 +401,29 @@ int executeProgram(char* filename) {
     restoreDataSegment();
 
     if(program == NULL) {
-        printString("eP error: no free pcbs\0");
+        error3[0] = 'e';
+        error3[1] = 'P';
+        error3[2] = ' ';
+        error3[3] = 'e';
+        error3[4] = 'r';
+        error3[5] = 'r';
+        error3[6] = 'o';
+        error3[7] = 'r';
+        error3[8] = ':';
+        error3[9] = ' ';
+        error3[10] = 'n';
+        error3[11] = 'o';
+        error3[12] = ' ';
+        error3[13] = 'f';
+        error3[14] = 'r';
+        error3[15] = 'e';
+        error3[16] = 'e';
+        error3[17] = ' ';
+        error3[18] = 'p';
+        error3[19] = 'c';
+        error3[20] = 'b';
+        error3[21] = '\0';
+        printString(error3);
         return -2;
     }
 
@@ -387,6 +465,7 @@ int writeSector(char *buffer, int sector) {
 int deleteFile(char *fname) {
     int dirEntryNum, i;
     char *buf;
+    char error[33];
 
     struct directory diskDir;
     readSector(&diskDir, 2);
@@ -401,7 +480,32 @@ int deleteFile(char *fname) {
         writeSector(&diskDir, 2);
         return 1;
     } else {
-        printString("dF error: File does not exist\0");
+        error[0] = 'd';
+        error[1] = 'F';
+        error[2] = ' ';
+        error[3] = 'e';
+        error[4] = 'r';
+        error[5] = 'r';
+        error[6] = 'o';
+        error[7] = 'r';
+        error[8] = ':';
+        error[9] = ' ';
+        error[10] = 'F';
+        error[11] = 'i';
+        error[12] = 'l';
+        error[13] = 'e';
+        error[14] = ' ';
+        error[15] = 'n';
+        error[16] = 'o';
+        error[17] = 't';
+        error[18] = ' ';
+        error[19] = 'f';
+        error[20] = 'o';
+        error[21] = 'u';
+        error[22] = 'n';
+        error[23] = 'd';
+        error[24] = '\0';
+        printString(error);
         return -1;
     }
 }
