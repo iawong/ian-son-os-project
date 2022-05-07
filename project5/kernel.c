@@ -24,7 +24,6 @@ void kStrCopy(char *src, char *dest, int len);
 void yield();
 void showProcesses();
 int kill(int segment);
-void printHello();
 
 typedef char byte;
 
@@ -82,12 +81,14 @@ void putStr(int row, int column, char string[], char color) {
 // calls an interrupt to print a char array onto the screen
 int printString(char *str) {
     int i = 0;
-    while(str[i] != '\0') {
-        char al = str[i];
-        char ah = 0x0E;
-        int ax = ah * 256 + al;
-        interrupt(0x10, ax, 0, 0, 0);
-        i++;
+    while(*str != '\0') {
+        interrupt(0x10, 0x0E * 256 + *str, 0, 0, 0);
+        ++str;
+    }
+
+    while(*str != '\0') {
+        interrupt(0x10, 0x0E * 256 + *str, 0, 0, 0);
+        ++str;
     }
     return i;
 }
@@ -199,9 +200,7 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
         showProcesses();
     } else if(ax == 0x0B) {
         return kill(bx);
-    } else if(ax == 0x0C) {
-        printHello(); // shell will try to run this and print hello
-    } else {
+    }  else {
         return -1;
     }
 }
@@ -217,8 +216,10 @@ void printInt(int i) {
 // if the file exists, then return the sector
 // in which the contents of the file are stored
 int readfile(char *filename, char *buf) {
-    int dirEntryNum, count, sectorNum;
-    
+    int dirEntryNum, count, sectorNum, i;
+    char error[30];
+    char *str;
+
     struct directory diskDir;
 
     count = 0;
@@ -229,8 +230,37 @@ int readfile(char *filename, char *buf) {
     dirEntryNum = findFile(&diskDir, filename, buf);
 
     if(dirEntryNum == -1) {
-        printString("rF error: File does not exist\0");
-        //interrupt(0x21, 0x00, "rf file not found\0", 0, 0);
+        error[0] = 'r';
+        error[1] = 'F';
+        error[2] = ' ';
+        error[3] = 'e';
+        error[4] = 'r';
+        error[5] = 'r';
+        error[6] = 'o';
+        error[7] = 'r';
+        error[8] = ':';
+        error[9] = ' ';
+        error[10] = 'F';
+        error[11] = 'i';
+        error[12] = 'l';
+        error[13] = 'e';
+        error[14] = ' ';
+        error[15] = 'd';
+        error[16] = 'o';
+        error[17] = 'e';
+        error[18] = 's';
+        error[19] = ' ';
+        error[20] = 'n';
+        error[21] = 'o';
+        error[22] = 't';
+        error[23] = ' ';
+        error[24] = 'e';
+        error[25] = 'x';
+        error[26] = 'i';
+        error[27] = 's';
+        error[28] = 't';
+        error[29] = '\0';
+        printString(error);
         return -1;
     }
 
@@ -576,9 +606,4 @@ int kill(int segment) {
         return -1;
     }
     restoreDataSegment();
-}
-
-//added to system calls
-void printHello() {
-    printString("Hello\0");
 }

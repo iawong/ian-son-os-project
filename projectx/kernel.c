@@ -283,13 +283,15 @@ void terminate() {
 void print() {
     int i = 0;
     char *str = "rf\0";
+    char r = 'r';
+    char f = 'f';
     // while loop doesn't work for some reason
     // could be the str[i]
-    while(str[i] != '\0') {
-        interrupt(0x10, 0x0E * 256 + str[i], 0, 0, 0);
-        i++;
-    }
+    // while(*str != '\0') {
+    //     interrupt(0x10, 0x0E * 256 + *str, 0, 0, 0);
+    //     ++str;
+    // }
 
-    //interrupt(0x10, 0x0E * 256 + 'r', 0, 0, 0);
-    //interrupt(0x10, 0x0E * 256 + 'f', 0, 0, 0);
+    interrupt(0x10, 0x0E * 256 + str[0], 0, 0, 0);
+    interrupt(0x10, 0x0E * 256 + str[1], 0, 0, 0);
 }
