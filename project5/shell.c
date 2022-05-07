@@ -119,9 +119,7 @@ int main() {
                 }
             }
         } else if(line[0] == 'p' && line[1] == 's') {
-            char *buf;
-            buf = showProcesses();
-            printString(buf);
+            showProcesses();
         } else if(line[0] == 'k' && line[1] == 'i', line[2] == 'l', line[3] == 'l') {
             // read segment number
             // call kill on the segment number

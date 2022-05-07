@@ -36,7 +36,7 @@ int readCharShell(char *buf) {
     return interrupt(0x21, 0x11, buf, 0, 0);
 }
 
-char* showProcesses() {
+void showProcesses() {
     interrupt(0x21, 0x0A, 0, 0, 0);
 }
 

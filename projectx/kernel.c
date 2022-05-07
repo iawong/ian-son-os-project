@@ -11,7 +11,7 @@ int findFile(struct directory *dir, char *filename, char *buf);
 int fileNameLen(char *filename);
 int executeProgram(char* name, int segment);
 void terminate();
-void print(char *str);
+void print();
 
 typedef char byte;
 
@@ -28,11 +28,8 @@ struct directory {
 int main() {
     makeInterrupt21();
     interrupt(0x21, 0x04, "shell\0", 0x2000, 0);
-    interrupt(0x21, 0x00, "Done!\n\r\0", 0, 0);
 
     while(1);
-
-    return 0;
 }
 
 // places a character at a specifc location on the screen given
@@ -149,7 +146,7 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
     int i = 0;
     if(ax == 0x00) {
         str = bx;
-        printString((char *) bx);
+        printString((char*) bx);
         return i;
     } else if(ax == 0x11) {
         str = bx;
@@ -181,7 +178,8 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
 // if the file exists, then return the sector
 // in which the contents of the file are stored
 int readfile(char *filename, char *buf) {
-    int dirEntryNum, count, sectorNum;
+    int dirEntryNum, count, sectorNum, i;
+    char *error;
     
     struct directory diskDir;
 
@@ -193,7 +191,12 @@ int readfile(char *filename, char *buf) {
     dirEntryNum = findFile(&diskDir, filename, buf);
 
     if(dirEntryNum == -1) {
-        print("rf error: File not found\0");
+        error = ("rf error: File not found\0");
+        // while(error[i] != '\0') {
+        //     interrupt(0x10, 0x0E * 256 + error[i], 0, 0, 0);
+        //     i++;
+        // }
+        print();
         return -1;
     }
 
@@ -277,6 +280,16 @@ void terminate() {
     interrupt(0x21, 0x04, "shell\0", 0x2000, 0);
 }
 
-void print(char *str) {
-    printString(str);
+void print() {
+    int i = 0;
+    char *str = "rf\0";
+    // while loop doesn't work for some reason
+    // could be the str[i]
+    while(str[i] != '\0') {
+        interrupt(0x10, 0x0E * 256 + str[i], 0, 0, 0);
+        i++;
+    }
+
+    //interrupt(0x10, 0x0E * 256 + 'r', 0, 0, 0);
+    //interrupt(0x10, 0x0E * 256 + 'f', 0, 0, 0);
 }

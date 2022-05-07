@@ -16,7 +16,7 @@ int writeFile(char *filename, char *buffer, int sectors);
 
 int readCharShell(char *buf);
 
-char* showProcesses();
+void showProcesses();
 
 int kill(int segment);
 
