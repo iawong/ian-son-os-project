@@ -217,7 +217,7 @@ void printInt(int i) {
 // in which the contents of the file are stored
 int readfile(char *filename, char *buf) {
     int dirEntryNum, count, sectorNum, i;
-    char error[25];
+    char error[27];
     char *str;
 
     struct directory diskDir;
@@ -254,7 +254,9 @@ int readfile(char *filename, char *buf) {
         error[21] = 'u';
         error[22] = 'n';
         error[23] = 'd';
-        error[24] = '\0';
+        error[24] = '\r';
+        error[25] = '\n';
+        error[26] = '\0';
         printString(error);
         return -1;
     }
@@ -306,9 +308,9 @@ int executeProgram(char* filename) {
     int file, i, j, index, segment, offset;
     struct PCB *program;
     char buf[13312];
-    char error1[25];
-    char error2[33];
-    char error3[22];
+    char error1[27];
+    char error2[35];
+    char error3[24];
 
     offset = 0x000;
     file = readfile(filename, buf);
@@ -338,7 +340,9 @@ int executeProgram(char* filename) {
         error1[21] = 'u';
         error1[22] = 'n';
         error1[23] = 'd';
-        error1[24] = '\0';
+        error1[24] = '\r';
+        error1[25] = '\n';
+        error1[26] = '\0';
         printString(error1);
         return -1;
     }
@@ -380,7 +384,9 @@ int executeProgram(char* filename) {
         error2[29] = 'e';
         error2[30] = 'n';
         error2[31] = 't';
-        error2[32] = '\0';
+        error2[32] = '\r';
+        error2[33] = '\n';
+        error2[34] = '\0';
         printString(error2);
         return -2;
     }
@@ -422,7 +428,9 @@ int executeProgram(char* filename) {
         error3[18] = 'p';
         error3[19] = 'c';
         error3[20] = 'b';
-        error3[21] = '\0';
+        error3[21] = '\r';
+        error3[22] = '\n';
+        error3[23] = '\0';
         printString(error3);
         return -2;
     }
@@ -465,7 +473,7 @@ int writeSector(char *buffer, int sector) {
 int deleteFile(char *fname) {
     int dirEntryNum, i;
     char *buf;
-    char error[33];
+    char error[27];
 
     struct directory diskDir;
     readSector(&diskDir, 2);
@@ -504,7 +512,9 @@ int deleteFile(char *fname) {
         error[21] = 'u';
         error[22] = 'n';
         error[23] = 'd';
-        error[24] = '\0';
+        error[24] = '\r';
+        error[25] = '\n';
+        error[26] = '\0';
         printString(error);
         return -1;
     }
