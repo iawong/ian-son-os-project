@@ -686,15 +686,61 @@ void showProcesses() {
     struct PCB *pcb;
     char *str;
     char numbers[8];
+    char zero[6];
+    char one[6];
+    char two[6];
+    char three[6];
+    char four[6];
+    char five[6];
+    char six[6];
+    char seven[6];
 
-    char zero[6] = "Zero\0";
-    char one[6] = "One\0";
-    char two[6] = "Two\0";
-    char three[6] = "Three\0";
-    char four[6] = "Four\0";
-    char five[6] = "Five\0";
-    char six[6] = "Six\0";
-    char seven[6] = "Seven\0";
+    zero[0] = 'Z';
+    zero[1] = 'e';
+    zero[2] = 'r';
+    zero[3] = 'o';
+    zero[4] = '\0';
+
+    one[0] = 'O';
+    one[1] = 'n';
+    one[2] = 'e';
+    one[3] = '\0';
+
+    two[0] = 'T';
+    two[1] = 'w';
+    two[2] = 'o';
+    two[3] = '\0';
+
+    three[0] = 'T';
+    three[1] = 'h';
+    three[2] = 'r';
+    three[3] = 'e';
+    three[4] = 'e';
+    three[5] = '\0';
+
+    four[0] = 'F';
+    four[1] = 'o';
+    four[2] = 'u';
+    four[3] = 'r';
+    four[4] = '\0';
+
+    five[0] = 'F';
+    five[1] = 'i';
+    five[2] = 'v';
+    five[3] = 'e';
+    five[4] = '\0';
+
+    six[0] = 'S';
+    six[1] = 'i';
+    six[2] = 'x';
+    six[3] = '\0';
+
+    seven[0] = 'S';
+    seven[1] = 'e';
+    seven[2] = 'v';
+    seven[3] = 'e';
+    seven[4] = 'n';
+    seven[5] = '\0';
 
     numbers[0] = zero;
     numbers[1] = one;
