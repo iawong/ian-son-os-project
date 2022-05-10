@@ -85,11 +85,6 @@ int printString(char *str) {
         interrupt(0x10, 0x0E * 256 + *str, 0, 0, 0);
         ++str;
     }
-
-    while(*str != '\0') {
-        interrupt(0x10, 0x0E * 256 + *str, 0, 0, 0);
-        ++str;
-    }
     return i;
 }
 
@@ -767,21 +762,15 @@ void showProcesses() {
 }
 
 // kill the process running on the given segment
-int kill(int segment) {
-    int index, i;
-
-    index = (segment / 0x1000) - 2;
-    setKernelDataSegment();
+int kill(int index) {
     if(memoryMap[index] == USED) {
-        for(i = 0; i < 8; i++) {
-            if(pcbPool[i].segment == segment) {
-                releaseMemorySegment(index);
-                releasePCB(&pcbPool[i]);
-                return 1;
-            }
-        }
+        setKernelDataSegment();
+        releaseMemorySegment(index);
+        releasePCB(index);
+        running = NULL;
+        restoreDataSegment();
+        return 1;
     } else {
         return -1;
     }
-    restoreDataSegment();
 }

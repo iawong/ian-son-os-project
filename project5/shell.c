@@ -5,7 +5,7 @@ int readSector(char *buf, int absSector);
 
 int main() {
     while(1) {
-        int i, j, k, l, sectors, segment;
+        int i, j, k, l, sectors, segment, index;
 
         typedef char byte;
 
@@ -101,10 +101,12 @@ int main() {
         } else if(line[0] == 'p' && line[1] == 's') {
             showProcesses();
         } else if(line[0] == 'k' && line[1] == 'i', line[2] == 'l', line[3] == 'l') {
-            // read segment number
-            // call kill on the segment number
-            // print successful if kill returns 1
-            // print unsuccessful if kill returns -1
+            i = kill((int) line[5]);
+            if(i == 1) {
+                printString("Successful\r\n\0");
+            } else {
+                printString("Unsuccessful\r\n\0");
+            }
         } else {
             printString("Unrecognized command\0\r\n");
         }
