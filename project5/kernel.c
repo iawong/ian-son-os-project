@@ -766,16 +766,28 @@ void showProcesses() {
 
 // kill the process running on the given segment
 int kill(int index) {
-    if(memoryMap[index] == USED) {
-        setKernelDataSegment();
-        releaseMemorySegment(index);
-        releasePCB(index);
-        running = NULL;
-        restoreDataSegment();
-        return 1;
-    } else {
-        return -1;
+    int i, j;
+    char a[2];
+    a[0] = 'a';
+    a[1] = '\0';
+
+    for(i = 0; i < 8; i++) {
+        if(memoryMap[i] == USED) {
+            for(j = 0; j < i; j++) {
+                printString(a);
+            }
+        }
     }
+    // if(memoryMap[index] == USED) {
+    //     setKernelDataSegment();
+    //     releaseMemorySegment(index);
+    //     releasePCB(index);
+    //     running = NULL;
+    //     restoreDataSegment();
+    //     return 1;
+    // } else {
+    //     return -1;
+    // }
 }
 
 // pauses the running processes for x amount of seconds
