@@ -101,12 +101,13 @@ int main() {
         } else if(line[0] == 'p' && line[1] == 's') {
             showProcesses();
         } else if(line[0] == 'k' && line[1] == 'i', line[2] == 'l', line[3] == 'l') {
-            i = kill(line[5] - '0');
-            if(i == 1) {
-                printString("Successful\r\n\0");
-            } else {
-                printString("Unsuccessful\r\n\0");
-            }
+            kill(line[5] - '0');
+            // i = kill(line[5] - '0');
+            // if(i == 1) {
+            //     printString("Successful\r\n\0");
+            // } else {
+            //     printString("Unsuccessful\r\n\0");
+            // }
         } else if(line[0] == 's' && line[1] == 'l' && line[2] == 'e' && line[3] == 'e' &&
         line[4] == 'p') {
             sleep(line[6] - '0');

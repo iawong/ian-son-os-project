@@ -774,8 +774,12 @@ int kill(int index) {
     for(i = 0; i < 8; i++) {
         if(memoryMap[i] == USED) {
             for(j = 0; j < i; j++) {
-                printString(a);
+                interrupt(0x10, 0x0E * 256 + 'a', 0, 0, 0);
             }
+        } else if(memoryMap[i] == FREE) {
+            interrupt(0x10, 0x0E * 256 + 'b', 0, 0, 0);
+        } else {
+            interrupt(0x10, 0x0E * 256 + 'c', 0, 0, 0);
         }
     }
     // if(memoryMap[index] == USED) {
