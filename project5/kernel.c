@@ -24,6 +24,7 @@ void kStrCopy(char *src, char *dest, int len);
 void yield();
 void showProcesses();
 int kill(int segment);
+void sleep(int seconds);
 
 typedef char byte;
 
@@ -195,16 +196,18 @@ int handleInterrupt21(int ax, int bx, int cx, int dx) {
         showProcesses();
     } else if(ax == 0x0B) {
         return kill(bx);
-    }  else {
+    } else if(ax == 0xA1) {
+        sleep(bx);
+    } else {
         return -1;
     }
 }
 
 void printInt(int i) {
-    int *numb[2];
-    numb[0] = i;
-    numb[1] = '\0';
-    printString(numb);
+    int *num[2];
+    num[0] = i;
+    num[1] = '\0';
+    printString(num);
 }
 
 // find if a file exists in the disk directory
@@ -773,4 +776,12 @@ int kill(int index) {
     } else {
         return -1;
     }
+}
+
+// pauses the running processes for x amount of seconds
+void sleep(int seconds) { // how to implement seconds?
+    setKernelDataSegment();
+    running->state = BLOCKED;
+    restoreDataSegment();
+    yield();
 }

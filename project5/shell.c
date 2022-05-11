@@ -107,6 +107,9 @@ int main() {
             } else {
                 printString("Unsuccessful\r\n\0");
             }
+        } else if(line[0] == 's' && line[1] == 'l' && line[2] == 'e' && line[3] == 'e' &&
+        line[4] == 'p') {
+            sleep(line[6] - '0');
         } else {
             printString("Unrecognized command\0\r\n");
         }

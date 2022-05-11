@@ -48,6 +48,6 @@ void yield() {
     interrupt(0x21, 0x09, 0, 0, 0);
 }
 
-void printHello() {
-    interrupt(0x21, 0x0C, 0, 0, 0);
+void sleep(int seconds) {
+    interrupt(0x21, 0xA1, seconds, 0, 0);
 }

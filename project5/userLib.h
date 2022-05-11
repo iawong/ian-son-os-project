@@ -22,4 +22,4 @@ int kill(int segment);
 
 void yield();
 
-void printHello();
+void sleep(int seconds);
