@@ -101,7 +101,7 @@ int main() {
         } else if(line[0] == 'p' && line[1] == 's') {
             showProcesses();
         } else if(line[0] == 'k' && line[1] == 'i', line[2] == 'l', line[3] == 'l') {
-            i = kill((int) line[5]);
+            i = kill(line[5] - '0');
             if(i == 1) {
                 printString("Successful\r\n\0");
             } else {

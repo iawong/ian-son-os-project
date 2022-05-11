@@ -47,7 +47,7 @@ void initializeProcStructures() {
  * should be marked as used.
  */
 int getFreeMemorySegment() {
-    int i = 0;
+    int i;
 
     for(i = 0; i < 8; i++) {
         if(memoryMap[i] == FREE) {
