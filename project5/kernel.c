@@ -775,8 +775,10 @@ int kill(int index) {
 
 // pauses the running processes for x amount of seconds
 void sleep(int seconds) { // how to implement seconds?
+    int i;
     setKernelDataSegment();
     running->state = BLOCKED;
+    for(i = 0; i < seconds * 1000; i++) {}
     restoreDataSegment();
     yield();
 }
