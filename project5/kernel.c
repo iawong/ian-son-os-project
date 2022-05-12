@@ -671,11 +671,6 @@ void kStrCopy (char *src, char *dest, int len) {
 // the ready queue
 void yield() {
     interrupt(0x08, 0, 0, 0, 0);
-    // running = running->segment;
-    // running = running->stackPointer;
-    // running->state = READY;
-
-    // addToReady(running);
 }
 
 // lists all processes
@@ -766,32 +761,16 @@ void showProcesses() {
 
 // kill the process running on the given segment
 int kill(int index) {
-    int i, j;
-    char a[2];
-    a[0] = 'a';
-    a[1] = '\0';
-
-    for(i = 0; i < 8; i++) {
-        if(memoryMap[i] == USED) {
-            for(j = 0; j < i; j++) {
-                interrupt(0x10, 0x0E * 256 + 'a', 0, 0, 0);
-            }
-        } else if(memoryMap[i] == FREE) {
-            interrupt(0x10, 0x0E * 256 + 'b', 0, 0, 0);
-        } else {
-            interrupt(0x10, 0x0E * 256 + 'c', 0, 0, 0);
-        }
+    if(memoryMap[index] == USED) {
+        setKernelDataSegment();
+        releaseMemorySegment(index);
+        releasePCB(index);
+        running = NULL;
+        restoreDataSegment();
+        return 1;
+    } else {
+        return -1;
     }
-    // if(memoryMap[index] == USED) {
-    //     setKernelDataSegment();
-    //     releaseMemorySegment(index);
-    //     releasePCB(index);
-    //     running = NULL;
-    //     restoreDataSegment();
-    //     return 1;
-    // } else {
-    //     return -1;
-    // }
 }
 
 // pauses the running processes for x amount of seconds

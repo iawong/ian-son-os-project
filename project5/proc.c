@@ -55,7 +55,6 @@ int getFreeMemorySegment() {
             return i;
         }
     }
-
     return -1;
 }
 
